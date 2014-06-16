@@ -1,0 +1,177 @@
+!----------------------------------------!
+!                                        !
+!        Yggdrasil model grids           !
+!                                        !
+!----------------------------------------!
+
+General information
+-------------------
+Yggdrasil is a population synthesis code custom-designed for modelling the spectral energy distributions (SEDs) of high-redshift galaxies. Yggdrasil predicts the SEDs of integrated stellar populations with metallicities ranging from zero to supersolar, and also includes the effects of nebular emission and dust extinction. A detailed description of the model can be found in Zackrisson et al. (2011, ApJ, 740, 13). While mainly geared towards young, low-mass galaxies with burst-like star formation histories, Yggdrasil can also be used to model unresolved stellar populations like galaxies or star clusters at low and intermediate redshifts.
+
+Model grids
+-----------
+The current model grid (v.1.3.1) includes a set of burst-like star formation histories for low-mass systems, with or without nebular emission. No extinction is included in this first release. All models with nebular emission assume a filling factor of 0.01, a gas density n(H) = 100 cm^-3 and Mtot=10^6 Msolar. The results can safely be applied to objects with somewhat higher or lower masses, but caution is in order when treating objects with stellar masses significantly above ~10^9 Msolar, since the nebular contribution to the spectrum is slightly mass dependent. The purely stellar models (f_cov=0) can, however, safely be scaled upwards to any mass. Since Yggdrasil assumes a fully sampled IMF, caution is also in order for objects with stellar masses much lower than ~10^5 Msolar, since stochastic IMF sampling effects are likely to be important in that mass range.  
+
+Input parameters
+----------------
+* Metallicity and IMF
+A number of IMFs and metallicities are available for the single stellar populations (SSP) used as input to Yggdrasil. The nomenclature is the same as in the Zackrisson et al. (2011) paper.
+
+- Pop III.1 
+A zero-metallicity population with an extremely top-heavy IMF (50-500 Msolar, Salpeter slope), using a SSP from Schaerer et al. (2002, A&A, 382, 28).
+
+- Pop III.2
+A zero-metallicity population with a moderately top-heavy IMF (log-normal with characteristic mass M_c=10 Msolar, dispersion sigma=1 Msolar and  wings extending from 1-500 Msolar) from Raiter et al. (2010, A&A 523, 64).
+
+- Pop III, Kroupa IMF
+A zero-metallicity population with a normal IMF (universal Kroupa 2001 IMF in the intervval 0.1-100 Msolar), based on a rescaled SSP from Schaerer et al. (2002, A&A, 382, 28).
+
+- Z=0.0004, Kroupa IMF
+A Z=0.0004, Starburst99 SSP based on Padova-AGB tracks (Leitherer et al. 1999, ApJS, 123, 3; Vazquez & Leitherer, C. 2005, ApJ, 621, 695) with a universal Kroupa (2001) IMF in the interval 0.1-100 Msolar
+
+- Z=0.004, Kroupa IMF
+A Z=0.004, Starburst99 SSP based on Padova-AGB tracks (Leitherer et al. 1999, ApJS, 123, 3; Vazquez & Leitherer, C. 2005, ApJ, 621, 695) with a universal Kroupa (2001) IMF in the interval 0.1-100 Msolar
+
+- Z=0.008, Kroupa IMF
+A Z=0.008, Starburst99 SSP based on Padova-AGB tracks (Leitherer et al. 1999, ApJS, 123, 3; Vazquez & Leitherer, C. 2005, ApJ, 621, 695) with a universal Kroupa (2001) IMF in the interval 0.1-100 Msolar
+
+- Z=0.020, Kroupa IMF
+A Z=0.020, Starburst99 SSP based on Padova-AGB tracks (Leitherer et al. 1999, ApJS, 123, 3; Vazquez & Leitherer, C. 2005, ApJ, 621, 695) with a universal Kroupa (2001) IMF in the interval 0.1-100 Msolar
+
+* Gas covering factor
+The gas covering factor f_cov regulates the relative contribution from nebular emission to the final SED. It also determines the Lyman continuum escape fraction, f_esc through the relation f_esc = 1-f_cov.  
+
+- f_cov=1.0
+This implies maximal nebular contribution to the overall SED, and no escape of Lyman continnum photons (f_esc=0.0)
+
+- f_cov=0.5
+This implies a reduced nebular contribution to the overall SED, and 50 percent Lyman continnum escape (f_esc=0.5)
+
+- f_cov=0.0
+This implies a stars-only SED, with no nebular contribution to the overall SED, and complete Lyman continnum escape (f_esc=1.0)
+
+* Star formation history
+- Instantaneous burst
+This option leaves the SSP unchanged, and produces a single-age stellar population 
+
+- Constant SFR for 10 Myr
+Produces a burst of star formation with constant SFR lasting 10 Myr, after which the SFR drops to zero
+
+- Constant SFR for 30 Myr
+Produces a burst of star formation with constant SFR lasting 30 Myr, after which the SFR drops to zero
+
+- Constant SFR for 100 Myr
+Produces a burst of star formation with constant SFR lasting 100 Myr, after which the SFR drops to zero
+
+
+* Photometric system
+This determines the set of filters used in the output photometry files. All magnitudes are in the AB magnitude system.
+- SDSS
+Produces ugriz magnitudes in the Sloan Digital Sky Survey system
+
+- HST 
+Produces in the Hubble Space Telescope system, matching the cameras and filters used by the CLASH and CANDELS surveys
+
+- JWST/NIRCam
+Produces magnitudes in the James Webb Space Telescope system for the NIRCam instrument
+
+- JWST/MIRI
+Produces magnitudes in the James Webb Space Telescope system for the MIRI instrument
+
+- Spitzer
+Produces magnitudes in the Spitzer IRAC system
+
+- WISH
+Produces magnitudes for the Wide-field Imaging Surveyor for High-redshift (WISH) space science mission
+
+* Lyman-alpha fraction
+This parameter determines the fraction of Lyman-alpha photons transmitted from the source to the observer, and corresponds to the  Lyman-alpha escape fraction combined with IGM absorption factor.
+
+- f_Lya = 0
+This option implies no transmission of the Lyman-alpha line
+
+- fLya = 0.1
+This option implies 10% transmission of the Lyman-alpha line
+
+- fLya = 0.3
+This option implies 30% transmission of the Lyman-alpha line
+
+- fLya = 0.5
+This option implies 50% transmission of the Lyman-alpha line
+
+
+* Redshift coverage 
+
+- Full coverage, z=0-15, step 0.25
+Produces photometry data files for a broad range of redshifts but with fairly large redshift steps
+
+- Low redshift, z=0-0.5, step 0.01
+Produces photometry data files for the low-redshift Universe with small redshift steps
+
+- High redshift, z=5-11, step 0.1 
+Produces photometry data files for the high-redshift Universe with intermediate redshift steps
+
+The 'Get SEDs' button
+---------------------
+This button allows a sequence of rest-frame spectra for the selected model to be downloaded in ascii format. Each spectrum corresponds to a different age. The options concerning the Lyman-alpha fraction, photometric system and redshift coverage are ignored in this case. The Lyman-alpha fraction in these spectra is always 1.0. 
+
+
+The 'Get magnitudes' button
+---------------------------
+This button allows a sequence of model fluxes to be downloaded in ascii format for the selected redshift range. At redshifts z>6, all fluxes shortward of Lyman alpha are assumed to be absorbed by the intergalactic medium (IGM). Whenever IGM absorption produces zero flux in a filter, the corresponding magnitude is set to 999.000. At redshift z = 0.0, absolute magnitudes are printed (i.e. based on assumed distance of 10 pc), whereas apparent magnitudes are printed at z > 0. In the latter case, the luminosity distances are calculated using Omega_M=0.27, Omega_Lambda=0.73 and H_0=72 km s^-1 Mpc^-1. 
+
+The Mstars column represents the mass in stars that have not yet exploded as supernovae or turned into compact remnants.
+
+The Mconverted column represents the gas mass converted into stars since t=0.
+
+Please note that the full age vector is printed at all redshifts, even when these ages are higher than the age of the Universe at that epoch.
+
+Acknowledging the use of Yggdrasil
+----------------------------------
+If you are using Yggdrasil in your research, please cite:
+Zackrisson, E., Rydberg, C.-E., Schaerer, D., \"Ostlin, G. \& Tuli, M. 2011, ApJ, 740, 13 
+It would also be appropriate to cite the papers on which the SSPs used are based (see Metallicity and IMF above).
+
+Example: "These results are based on the Yggdrasil model (Zackrisson et al. 2011), using the Schaerer (2002) and Raiter et al. (2010) single stellar populations for population III stars."
+
+
+Frequently asked questions
+--------------------------
+1) For some parameter combinations, I get predictions that stop at very low ages. Why is that?
+The lower stellar mass limit for our pop III.1 models is 50 Msolar, which implies a maximum stellar lifetime of about 3 Myr. After that, the flux of the stellar population drops to zero. The lifetime of such stellar populations can be extended by adopting a more extended star formation history, but this will only keep the flux up for as long as star formation stays active. In the case of our pop III.2 models, the upper age limit is 1 Gyr since the Raiter et al. (2010) SSPs focus on young ages.
+
+2) When I compare the maximum ages in files with f_cov=1 and f_cov=0, results are produced at higher ages in the f_cov=0 case. What's going on?
+The photoionization code Cloudy, which is used to calculate the nebular contribution to the overall SED, sometimes crashes if the ionizing flux from the stellar component is very low. For some metallicities, this happens at ages of a few Gyr. At that point, the relative contribution of the nebula is completely negligible anyway. If you need predictions at higher ages for these metallicities, just use the f_cov=0 results.
+
+3) For pop III models, the Mstars column is zero at all ages. Is this a bug?
+No. This is simply because the input pop III SSP models don't keep track of this quantity.
+
+Updates
+-------
+- May 3, 2011: version 1.0 released
+
+- September 22, 2011: version 1.1 released
+Includes models for different Lyman-alpha fractions and a wider selection of redshift vectors
+
+- October 20, 2011: version 1.2 released
+Magnitudes in Spitzer filters added
+
+- November 20, 2011: version 1.3 released
+The previous output options 'CLASH' and 'CANDELS' have been replaced by a single HST option (including all filters relevant for the CLASH and CANDELS surveys + F098W_IR). The ordering of the columns in the magnitude files have also changed, so that the filters are now ordered according to central wavelength.
+
+- June 14, 2012: version 1.3.1 released
+Added transmission curve for F555W in the HST files.
+
+- November 28, 2013: version 1.4 released
+Magnitudes in WISH filters added
+
+Bugs
+----
+- Magnitude files downloaded prior to September 22, 2011 had incorrect fluxes shortward of the Lyman-alpha line at z>6 due to a bug in the software used to model IGM absorption for the Yggdrasil webpage.  As a result, the model galaxies appeared too bright at these wavelengths, with incorrect drop-out criteria as a result. Please not that this only affected fluxes in filters transmitting the lambda < 1216*(1+z) Ã… part of the spectrum.
+- Some of the spectra downloaded prior to October 22, 2011 contained incorrect masses in the header. The masses listed in the corresponding magnitude files were, however, correct.
+
+Contact
+-------
+Please contact Erik Zackrisson, ez@astro.su.se, if you have questions, encounter problems or have special requests (e.g. emission-line fluxes, predictions in additional filters or at redshifts different from the default values).
+
+
