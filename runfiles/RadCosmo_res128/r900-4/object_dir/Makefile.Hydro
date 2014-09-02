@@ -1,0 +1,22 @@
+Hydro += Hydro_interface.o Hydro_init.o Hydro.o Hydro_sendOutputData.o Hydro_computeDt.o Hydro_detectShock.o Hydro_finalize.o \
+         Hydro_mapBcType.o
+Hydro += Hydro_data.o hy_ppm_interface.o hy_ppm_block.o hy_ppm_sweep.o hy_ppm_updateSoln.o \
+         hy_ppm_putTemporaryData.o hy_ppm_getTemporaryData.o hy_ppm_completeGeomFactors.o
+Hydro += hy_ppm_force.o hy_ppm_geom.o
+Hydro += Hydro_shockStrength.o
+#	Makefile for 1D piecewise-parabolic method (PPM) module
+
+Hydro += hydro_1d.o \
+         grdvel.o \
+         avisco.o \
+         intrfc.o \
+         rieman.o \
+         riemann_hlle.o \
+         states.o \
+         coeff.o \
+         detect.o \
+         flaten.o \
+         interp.o hy_interpNoLim.o \
+         cma_flatten.o \
+         monot.o hy_nomonot.o \
+	 interp_char.o

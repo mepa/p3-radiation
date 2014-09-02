@@ -1,0 +1,14 @@
+/data1/r900-4/mepa/repos/flash4.2mepa/bin/setup.py RadCosmo -auto -3d -maxblocks=600 
+
+Expanded Command line
+--with-library=mpi --with-unit=IO --unit=Grid --gridinterpolation=monotonic RadCosmo --auto --3d --maxblocks=600
+
+Defined Setup Variables:
+
+fixedBlockSize --> True <type 'bool'>
+maxBlocks --> 600 <type 'int'>
+nDim --> 3 <type 'int'>
+nxb --> 8 <type 'int'>
+nyb --> 8 <type 'int'>
+nzb --> 8 <type 'int'>
+

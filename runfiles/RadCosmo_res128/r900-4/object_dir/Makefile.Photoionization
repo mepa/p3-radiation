@@ -1,0 +1,4 @@
+Photoionization += Photoionization.o Photoionization_init.o Photoionization_finalize.o Photoionization_interface.o
+
+Photoionization += Photoionization_data.o 
+

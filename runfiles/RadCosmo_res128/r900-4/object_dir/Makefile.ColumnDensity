@@ -1,0 +1,9 @@
+
+ColumnDensity += ColumnDensity.o \
+		 ColumnDensity_init.o \
+		 ColumnDensity_finalize.o \
+		 ColumnDensity_interface.o \
+
+ColumnDensity += ColumnDensity_data.o \
+		 cd_addColumnDensity.o \
+		 cd_interface.o

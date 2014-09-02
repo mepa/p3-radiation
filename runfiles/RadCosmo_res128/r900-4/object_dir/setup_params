@@ -1,0 +1,1711 @@
+
+Driver/DriverMain
+    allowDtSTSDominate [BOOLEAN] [FALSE]
+        allow a situation in which dt_STS becomes larger than dt_Hydro
+        (dt_advection) (assuming that diffusion dt is smaller than advection dt)
+        upto advection one, but not faster than the advection advancement. This
+        will be useful in solving PDE systems that are hyperbolic + parabolic.
+        FALSE will use the STS algorithm to even accelerate advection time
+        advancement, which in turn, will use larger advection dt than advection
+        dt from CFL limits. This will be useful in solving only hyperbolic PDE
+        systems in general. When hyperbolic + parabolic PDE system is to be
+        solved, then we suggest that users use less agressive super time
+        stepping method by using useSTSforDiffusion = TRUE.
+    dr_abortPause [INTEGER] [2]
+        Valid Values: 0 to INFTY
+        When Driver_abortFlash is called to abnormally end execution, and
+        dr_abortPause is grater than zero, the FLASH Driver_abortFlash code will
+        sleep for dr_abortPause seconds after writing explanatory messages (to
+        standard output and, possibly, to log files) but before calling
+        MPI_ABORT. See also eachProcWritesOwnAbortLog for controlling the
+        generation of per-processor log files.
+    dr_printTStepLoc [BOOLEAN] [TRUE]
+
+    dr_shortenLastStepBeforeTMax [BOOLEAN] [FALSE]
+        If TRUE, make the dt for the last time step shorter if necassary so as
+        to avoid overshooting tmax.
+    dr_tstepSlowStartFactor [REAL] [0.1]
+        Valid Values: 0.0 to INFTY
+        The initial dt is set to be at most the timestep computed by CFL
+        conditions applied to certain operators multiplied with this factor.
+    drift_break_inst [INTEGER] [0]
+        Valid Values: Unconstrained
+
+    drift_trunc_mantissa [INTEGER] [2]
+        Valid Values: Unconstrained
+        number of mantissa bits to exclude from hash (3 bits ~ 1 sigdig)
+    drift_tuples [BOOLEAN] [FALSE]
+        should block data be written in python tuples format
+    drift_verbose_inst [INTEGER] [0]
+        Valid Values: Unconstrained
+
+    dtinit [REAL] [1.E-10]
+        Valid Values: Unconstrained
+        Initial timestep
+    dtmax [REAL] [1.E5]
+        Valid Values: Unconstrained
+        Maximum timestep
+    dtmin [REAL] [1.E-10]
+        Valid Values: Unconstrained
+        Minimum timestep
+    eachProcWritesOwnAbortLog [BOOLEAN] [FALSE]
+        Should each process writes messages to its own log file when
+        Driver_abortFlash gets called to abnormally end execution? If true, each
+        process in which Driver_abortFlash is called will attempt to write an
+        explanatory message to its own log file, whether that file already
+        existed or needs to be newly created.  If false, the Driver_abortFlash
+        message will appear only in the regular log file (if the Logfile code
+        unit is used), and normally only when Driver_abortFlash is called by the
+        process with PE 0.
+    iProcs [INTEGER] [1]
+        Valid Values: Unconstrained
+        number of procs in the i dir
+    jProcs [INTEGER] [1]
+        Valid Values: Unconstrained
+        number of procs in the j dir
+    kProcs [INTEGER] [1]
+        Valid Values: Unconstrained
+        number of procs in the k dir
+    meshCopyCount [INTEGER] [1]
+        Valid Values: Unconstrained
+        The number of copies of full computational mesh that
+    nbegin [INTEGER] [1]
+        Valid Values: 1 to INFTY
+        First timestep
+    nend [INTEGER] [100]
+        Valid Values: Unconstrained
+        Maximum number of timesteps to take
+    nstepTotalSTS [INTEGER] [5]
+        Valid Values: Unconstrained
+
+    nuSTS [REAL] [0.1]
+        Valid Values: Unconstrained
+        nu stability parameter for super time stepping algorithm
+    restart [BOOLEAN] [FALSE]
+        Is this a restart run?
+    sweepOrder [INTEGER] [123]
+        Valid Values: 123, 132, 213, 231, 312, 321
+        Determine the order of the directional sweeps
+    threadBlockListBuild [BOOLEAN] CONSTANT [FALSE]
+
+    threadDriverBlockList [BOOLEAN] [FALSE]
+
+    threadDriverWithinBlock [BOOLEAN] [FALSE]
+
+    threadRayTraceBuild [BOOLEAN] CONSTANT [FALSE]
+
+    threadWithinBlockBuild [BOOLEAN] CONSTANT [FALSE]
+
+    tinitial [REAL] [0.0]
+        Valid Values: Unconstrained
+        Initial simulation time
+    tmax [REAL] [0.2]
+        Valid Values: Unconstrained
+        Maximum simulation time
+    tstep_change_factor [REAL] [2.0]
+        Valid Values: 0.0+ to INFTY
+        The initial time step dt is multiplied with this factor at every
+        timestep, until it is limited by CFL condition, allowing users to
+        specify a very conservative initial dt and letting it grow by specifying
+        a tstep_change_factor > 1.0.
+    useSTS [BOOLEAN] [FALSE]
+        Do we want to use super time stepping (STS) algorithm?
+    useSTSforDiffusion [BOOLEAN] [FALSE]
+        TRUE will use the STS algorithm to accelerate diffusion time advancement
+    wall_clock_time_limit [REAL] [604800.]
+        Valid Values: -1.0, 0.0 to INFTY
+        Total wall clock time limit (seconds). Use -1.0 for no limit.
+    zFinal [REAL] [0.0]
+        Valid Values: Unconstrained
+        The final redshift in a simulation.  The simulation will stop
+    zInitial [REAL] [-1.0]
+        Valid Values: Unconstrained
+        The initial redshift in a simulation.  < 0 if not being used.
+
+Grid/GridMain
+    bndPriorityOne [INTEGER] [1]
+        Valid Values: 1, 2, 3
+        indicates which direction (IAXIS, JAXIS, or KAXIS) gets top priority
+        when applying boundary conditions in corner guardcells We define three
+        values for edges left, center, right, of which center represents
+        interior, while left and right represent the corresponding guardcells.
+        We define a corner where more than one dimension has its its guardcells,
+        so the application must determine which direction gets to fill them. In
+        2-D, there are four corners: (left,left), (left,right), (right,left) and
+        (right,right). In 3-D case, the following corners are possible :
+        (left,left,left),(left,left,center),
+        (left,left,right),(left,center,left),
+        (left,center,right),(left,right,left),
+        (left,right,center),(left,right,right)
+        (center,left,left),(center,left,right),
+        (center,right,left),(center,right,right),
+        (right,left,left),(right,left,center),
+        (right,left,right),(right,center,left),
+        (right,center,right),(right,right,left),
+        (right,right,center),(right,right,right)
+    bndPriorityThree [INTEGER] [3]
+        Valid Values: 1, 2, 3
+        the least priority dimension in applying boundary conditions
+    bndPriorityTwo [INTEGER] [2]
+        Valid Values: 1, 2, 3
+        the second priority dimension in applying boundary conditions
+    convertToConsvdForMeshCalls [BOOLEAN] [FALSE]
+        indicates if appropriate variables are converted from primitive to
+        conserved form during propagation before control is passed to Paramesh
+        for refinement, derefinement, or guardcell filling.  This is the old way
+        of ensuring that solution variables are in the correct form for
+        interpolation. It involves unnecessary conversions back and forth and
+        should be obsoleted by the newer mechanism enabled by runtime parameter
+        "convertToConsvdInMeshInterp".  The name is a replacement for the old
+        "conserved_var" which many people have found to be very confusing
+        terminology.
+    eosMode [STRING] ["dens_ie"]
+        Valid Values: "dens_ie", "dens_pres", "dens_temp", "dens_ie_all",
+        "dens_ie_scatter", "dens_ie_gather", "dens_ie_sele_gather",
+        "dens_temp_equi", "dens_temp_all", "dens_temp_gather",
+        "dens_ie_recal_gather"
+        determines how to operate on thermodynamic quantities. Possible values
+        are "dens_ie", where density and internal energy are supplied and
+        pressure and temperature are returned; "dens_pres", where density and
+        pressure are given and energy and temperature are computed;  and
+        "dens_temp", where density and temperature are given and pressure and
+        energy are computed. Other values may also be available as, depending on
+        whether a multiTemp Eos is used and on implementation of additional
+        physics. For 3T simulations, the best choice is "dens_ie_recal_gather",
+        since this mode will ensure that total energy is conserved when
+        refinement changes occur.
+    eosModeInit [STRING] ["dens_ie"]
+        Valid Values: "dens_ie", "dens_pres", "dens_temp", "dens_ie_all",
+        "dens_ie_scatter", "dens_ie_gather", "dens_temp_equi", "dens_temp_all",
+        "dens_temp_gather", "eos_nop"
+        determines how to operate on thermodynamic quantities for the initial
+        conditions.  A call to Simulation_initBlock sets initial conditions on
+        each block, and an eos call follows which ensures the initial values are
+        thermodynamically consistent.  The value of eosModeInit determines the
+        mode in which these eos calls operate.  Possible values are "dens_ie",
+        where density and internal energy are supplied and pressure and
+        temperature are returned; "dens_pres", where density and pressure are
+        given and energy and temperature are computed; and "dens_temp", where
+        density and temperature are given and pressure and energy are computed. 
+        Other values may also be available as, depending on whether a multiTemp
+        Eos is used and on implementation of additional physics.
+    geometry [STRING] ["cartesian"]
+        Valid Values: "cartesian", "polar", "cylindrical", "spherical"
+        Grid geometry
+    geometryOverride [BOOLEAN] [FALSE]
+        whether to bypass some geometry sanity checks - use at your own risk.
+    gr_bcEnableApplyMixedGds [BOOLEAN] [TRUE]
+        whether to enable the Grid_bcApplyToRegionMixedGds interface for
+        implementing boundary conditions with access to the variables of mixed
+        GDSs (in particlular, cell-centered UNK varsiables and face variables).
+        This only has an effect if the GridBoundaryConditions subunit is
+        included and the simulation actually supplies an implementation of
+        Grid_bcApplyToRegionMixedGds.
+    reduceGcellFills [BOOLEAN] [FALSE]
+
+    unbiased_geometry [BOOLEAN] [FALSE]
+        attempt to remove floating point bias from geometry discretization. Not
+        implemented in FLASH3.
+    xl_boundary_type [STRING] ["periodic"]
+        Valid Values: Unconstrained
+        lower (left) boundary condition in x dir
+    xmax [REAL] [1.]
+        Valid Values: Unconstrained
+        physical domain upper bound in x dir
+    xmin [REAL] [0.]
+        Valid Values: Unconstrained
+        physical domain lower bound in x dir
+    xr_boundary_type [STRING] ["periodic"]
+        Valid Values: Unconstrained
+        upper (right) boundary condition in x dir
+    yl_boundary_type [STRING] ["periodic"]
+        Valid Values: Unconstrained
+        lower boundary condition in y dir
+    ymax [REAL] [1.]
+        Valid Values: Unconstrained
+        physical domain upper bound in y dir
+    ymin [REAL] [0.]
+        Valid Values: Unconstrained
+        physical domain lower bound in y dir
+    yr_boundary_type [STRING] ["periodic"]
+        Valid Values: Unconstrained
+        upper boundary condition in y dir
+    zl_boundary_type [STRING] ["periodic"]
+        Valid Values: Unconstrained
+        lower boundary condition in z dir
+    zmax [REAL] [1.]
+        Valid Values: Unconstrained
+        physical domain lower bound in x dir
+    zmin [REAL] [0.]
+        Valid Values: Unconstrained
+        physical domain lower bound in z dir
+    zr_boundary_type [STRING] ["periodic"]
+        Valid Values: Unconstrained
+        upper boundary condition in z dir
+
+Grid/GridMain/paramesh
+    convertToConsvdInMeshInterp [BOOLEAN] [TRUE]
+        indicates if appropriate variables are converted to conserved form
+        during propagation within the interpolation routines invoked by
+        Paramesh. This applies to interpolation (both "prolongation" and
+        "restriction") in the course of refinement, derefinement, or guardcell
+        filling. This is the newer way of ensuring that solution variables are
+        interpolated in the correct form. It avoids unnecessary conversions back
+        and force and should replace the old mechanism enabled by runtime
+        parameter "convertToConsvdForMeshCalls". However, it is only available
+        with PARAMESH 3 or later.
+    derefine_cutoff_1 [REAL] [0.2]
+        Valid Values: Unconstrained
+        threshold value to trigger derefinement for refine_var_1
+    derefine_cutoff_2 [REAL] [0.2]
+        Valid Values: Unconstrained
+        threshold value to trigger derefinement for refine_var_2
+    derefine_cutoff_3 [REAL] [0.2]
+        Valid Values: Unconstrained
+        threshold value to trigger derefinement for refine_var_3
+    derefine_cutoff_4 [REAL] [0.2]
+        Valid Values: Unconstrained
+        threshold value to trigger derefinement for refine_var_4
+    earlyBlockDistAdjustment [BOOLEAN] [TRUE]
+        If true, let Paramesh redistribute blocks across processors early, so
+        that the block distribution chosen by Paramesh will be in effect when
+        time evolution begins after restart. If earlyBlockDistAdjustment is
+        false, the block distribution enacted by the IO unit when it read a
+        checkpoint file will normally still be in effect when time evolution
+        begins after a restart. This flag is ignored if not restarting from a
+        checkpoint.
+    flux_correct [BOOLEAN] [true]
+        turns on or off flux correction
+    gr_lrefineMaxByTime [BOOLEAN] [FALSE]
+        This parameter activates the ability to manually specify values for
+        lrefine_max as a function of time. You can change the value of
+        lrefine_max a total of 20 times. The parameters gr_lrefmaxTime_N (where
+        N is a number from 1 to 20) tell FLASH the times at which lrefine_max
+        changes will occur. The analogous parameters gr_lrefmaxTimeValue_N
+        (where N is a number from 1 to 20) tell FLASH  the value of lrefine_max
+        to use at time gr_lrefmaxTime_N. For example, specifying the following
+        lines in your flash.par file tells FLASH to use an lrefine_max value of
+        10 at t = 1.0e-09 s and a value of 11 at t = 2.0e-09 s: 
+        gr_lrefmaxTime_1 = 1.0e-09 gr_lrefmaxTimeValue_1 = 10 gr_lrefmaxTime_2 =
+        2.0e-09 gr_lrefmaxTimeValue_2 = 10 . NOTE: the time values must be in
+        sequential order!
+    gr_lrefineMaxRedDoByLogR [BOOLEAN] [FALSE]
+        Softly force effectively a lower lrefine_max depending on distance from
+        center. See gr_lrefineMaxRedRadiusFact.
+    gr_lrefineMaxRedDoByTime [BOOLEAN] [FALSE]
+        Lower the effective lrefine_max as a function of time. See runtime
+        parameters gr_lrefineMaxRedTRef, gr_lrefineMaxRedTimeScale, and
+        gr_lrefineMaxRedLogBase.
+    gr_lrefineMaxRedLogBase [REAL] [10.0]
+        Valid Values: 1.0 to INFTY
+        Logarithm base for determining when repeated reductions in effective
+        lrefine_max should happen. The nth reduction will happen at
+        t=gr_lrefineMaxRedTRef+gr_lrefineMaxRedTimeScale*gr_lrefineMaxRedLogBase**(n-1).
+    gr_lrefineMaxRedRadiusFact [REAL] [0.0]
+        Valid Values: 0.0 to INFTY
+        factor that determines a minimum resolution (and thus maximum refinement
+        level) based on distance from a center. See x_refine_center,
+        y_refine_center, z_refine_center for the center coordinates.  This is
+        approximately (linearly) equivalent to requiring a minimum *angular*
+        resolution, within the limits set by the global lrefine_min and
+        lrefine_max.  Only used when gr_lrefineMaxRedDoByLogR is TRUE.
+    gr_lrefineMaxRedTRef [REAL] [0.0]
+        Valid Values: Unconstrained
+        reference time for time-based max level reduction. The effective
+        reduction of lrefine_max only kicks in for times greater than
+        gr_lrefineMaxRedTRef. The first time lrefine_max is effectively lowered
+        actually happens at t=gr_lrefineMaxRedTRef+gr_lrefineMaxRedTimeScale.
+    gr_lrefineMaxRedTimeScale [REAL] [1.0]
+        Valid Values: TINY to INFTY
+        the time scale for effectively lowering lrefine_max: The first reduction
+        takes place at t=gr_lrefineMaxRedTRef+gr_lrefineMaxRedTimeScale.
+    gr_lrefmaxTimeValue_1 [INTEGER] [-1]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTimeValue_10 [INTEGER] [-1]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTimeValue_11 [INTEGER] [-1]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTimeValue_12 [INTEGER] [-1]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTimeValue_13 [INTEGER] [-1]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTimeValue_14 [INTEGER] [-1]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTimeValue_15 [INTEGER] [-1]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTimeValue_16 [INTEGER] [-1]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTimeValue_17 [INTEGER] [-1]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTimeValue_18 [INTEGER] [-1]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTimeValue_19 [INTEGER] [-1]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTimeValue_2 [INTEGER] [-1]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTimeValue_20 [INTEGER] [-1]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTimeValue_3 [INTEGER] [-1]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTimeValue_4 [INTEGER] [-1]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTimeValue_5 [INTEGER] [-1]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTimeValue_6 [INTEGER] [-1]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTimeValue_7 [INTEGER] [-1]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTimeValue_8 [INTEGER] [-1]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTimeValue_9 [INTEGER] [-1]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTime_1 [REAL] [-1.0]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTime_10 [REAL] [-1.0]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTime_11 [REAL] [-1.0]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTime_12 [REAL] [-1.0]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTime_13 [REAL] [-1.0]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTime_14 [REAL] [-1.0]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTime_15 [REAL] [-1.0]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTime_16 [REAL] [-1.0]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTime_17 [REAL] [-1.0]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTime_18 [REAL] [-1.0]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTime_19 [REAL] [-1.0]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTime_2 [REAL] [-1.0]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTime_20 [REAL] [-1.0]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTime_3 [REAL] [-1.0]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTime_4 [REAL] [-1.0]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTime_5 [REAL] [-1.0]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTime_6 [REAL] [-1.0]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTime_7 [REAL] [-1.0]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTime_8 [REAL] [-1.0]
+        Valid Values: Unconstrained
+
+    gr_lrefmaxTime_9 [REAL] [-1.0]
+        Valid Values: Unconstrained
+
+    gr_restrictAllMethod [INTEGER] [3]
+        Valid Values: 0 to 3
+        select a method to use for data restriction all the way up the tree of
+        blocks.  This this global data restriction is usually done when
+        IO_output is called, before the actual writing of plot or checkpoint
+        data, so that non-leaf blocks in plot and checkpoint files will have
+        meaningful data. Data restrictions that happen as part of guard cell
+        filling or within multigrid solvers are not affected by this setting.
+        For PARAMESH 2, this runtime parameter is currently ignored. With
+        PARAMESH 4, the following values are recognized:  0: No restriction is
+        done. 1: The original method, implemented in gr_restrictTree. 2: New
+        method, implemented using mpi_amr_restrict_fulltree. 3: New method,
+        implemented using Grid_restrictByLevels.
+    interpol_order [INTEGER] [2]
+        Valid Values: 0, 1, 2
+        the default interpolation order when using "monotonic" interpolation
+        routines
+    lrefine_del [INTEGER] [0]
+        Valid Values: 0 to INFTY
+        Try to reduce the maximum refinement level by this number of levels on a
+        restart.
+    lrefine_max [INTEGER] [1]
+        Valid Values: 1 to INFTY
+        maximum AMR refinement level
+    lrefine_min [INTEGER] [1]
+        Valid Values: 1 to INFTY
+        minimum AMR refinement level
+    lrefine_min_init [INTEGER] [1]
+        Valid Values: 1 to INFTY
+        minimum AMR refinement level for initialization
+    max_particles_per_blk [INTEGER] [100]
+        Valid Values: Unconstrained
+        integer  if the number of particles in a block exceeds this, it must
+        refine  when particle count is a refinement criterion
+    min_particles_per_blk [INTEGER] [1]
+        Valid Values: Unconstrained
+        integer  if the number of particles in a block is below this, it may
+        derefine when particle count is a refinement criterion
+    nblockx [INTEGER] [1]
+        Valid Values: Unconstrained
+        num initial blocks in x dir
+    nblocky [INTEGER] [1]
+        Valid Values: Unconstrained
+        num initial blocks in y dir
+    nblockz [INTEGER] [1]
+        Valid Values: Unconstrained
+        num initial blocks in z dir
+    nrefs [INTEGER] [2]
+        Valid Values: Unconstrained
+        refine/derefine AMR grid every nrefs timesteps
+    refine_cutoff_1 [REAL] [0.8]
+        Valid Values: Unconstrained
+        threshold value to trigger refinement for refine_var_1
+    refine_cutoff_2 [REAL] [0.8]
+        Valid Values: Unconstrained
+        threshold value to trigger refinement for refine_var_2
+    refine_cutoff_3 [REAL] [0.8]
+        Valid Values: Unconstrained
+        threshold value to trigger refinement for refine_var_3
+    refine_cutoff_4 [REAL] [0.8]
+        Valid Values: Unconstrained
+        threshold value to trigger refinement for refine_var_4
+    refine_filter_1 [REAL] [0.01]
+        Valid Values: Unconstrained
+        prevents error calculations to determine refinement from diverging
+        numerically for refine_var_1
+    refine_filter_2 [REAL] [0.01]
+        Valid Values: Unconstrained
+        prevents error calculations to determine refinement from diverging
+        numerically for refine_var_1
+    refine_filter_3 [REAL] [0.01]
+        Valid Values: Unconstrained
+        prevents error calculations to determine refinement from diverging
+        numerically for refine_var_3
+    refine_filter_4 [REAL] [0.01]
+        Valid Values: Unconstrained
+        prevents error calculations to determine refinement from diverging
+        numerically for refine_var_4
+    refine_on_particle_count [BOOLEAN] [FALSE]
+        if true, the count of particles in blocks act as a refinement criterion
+    refine_var_1 [STRING] ["none"]
+        Valid Values: Unconstrained
+        indicates 1st variable on which to refine
+    refine_var_2 [STRING] ["none"]
+        Valid Values: Unconstrained
+        indicates 2nd variable on which to refine
+    refine_var_3 [STRING] ["none"]
+        Valid Values: Unconstrained
+        indicates 3rd variable on which to refine
+    refine_var_4 [STRING] ["none"]
+        Valid Values: Unconstrained
+        indicates 4th variable on which to refine
+    refine_var_count [INTEGER] [4]
+        Valid Values: Unconstrained
+        count of maximum allowed variable to be used
+    x_refine_center [REAL] [0.0]
+        Valid Values: Unconstrained
+        First coordinate of center for distance-based refinement patterns
+    y_refine_center [REAL] [0.0]
+        Valid Values: Unconstrained
+        Second coordinate of center for distance-based refinement patterns
+    z_refine_center [REAL] [0.0]
+        Valid Values: Unconstrained
+        Third coordinate of center for distance-based refinement patterns
+
+Grid/GridMain/paramesh/paramesh4
+    enableMaskedGCFill [BOOLEAN] [FALSE]
+        When enableMaskedGCFill is FALSE, Grid_fillGuardCells is forced to
+        always ignore optional mask arguments when present in calls. This is the
+        default behavior. Set enableMaskedGCFill TRUE to enable masked guard
+        cell filling.
+    gr_sanitizeDataMode [INTEGER] [1]
+        Valid Values: 0, 1, 2, 3, 4
+        What to do when gr_sanitizeDataAfterInterp is called to check for
+        acceptable values in the dens, ener, and eint cell-centered variables
+        after a Grid operation may have resulted in grid interpolation. 0: Do
+        nothing. 1: Check (if variable is not masked out) and report (see
+        sanitizeVerbosity). 2: Check (ignoring variable mask) and report (see
+        sanitizeVerbosity). 3: Check (if variable is not masked out) and fix
+        (apply floor value). 4: Check (if variable is not masked out) and abort
+        if cell is found below floor value.
+    gr_sanitizeVerbosity [INTEGER] [5]
+        Valid Values: 0, 1, 4, 5
+        How to write information about unacceptable values in the dens, ener,
+        and eint cell-centered variables if gr_sanitizeDataAfterInterp finds
+        value that are below the acceptable floor. This reporting is in addition
+        to other actions selected with gr_sanitizeDataMode=3 or 4. 0: Be quiet.
+        1: Only write a log file message per block if unacceptable value found
+        on MASTER_PE. 4: As 1, and each proc writes a line to standard output
+        for each block with bad values. 5: As 4, and each proc writes lines
+        showing the values in all cells of the block (in 1D/2D) 5: or a 2D slice
+        (in 3D).
+
+Grid/GridMain/paramesh/paramesh4/Paramesh4dev
+    gr_pmrpAdvanceAllLevels [BOOLEAN] [FALSE]
+        sets value for PARAMESH runtime parameter advance_all_levels
+    gr_pmrpAmrErrorChecking [BOOLEAN] [FALSE]
+        sets value for PARAMESH runtime parameter amr_error_checking
+    gr_pmrpCartesianPm [BOOLEAN] [FALSE]
+        sets value for PARAMESH runtime parameter cartesian_pm This will be
+        adjusted by FLASH at runtime if necessary, so don't worry much.
+    gr_pmrpConserve [BOOLEAN] [FALSE]
+        sets value for PARAMESH runtime parameter conserve
+    gr_pmrpConsvFluxDensities [BOOLEAN] [TRUE]
+        sets value for PARAMESH runtime parameter consv_flux_densities This will
+        be adjusted by FLASH at runtime if necessary, so don't worry much.
+    gr_pmrpConsvFluxes [BOOLEAN] [FALSE]
+        sets value for PARAMESH runtime parameter consv_fluxes This will be
+        adjusted by FLASH at runtime if necessary, so don't worry much.
+    gr_pmrpCurvilinear [BOOLEAN] [FALSE]
+        sets value for PARAMESH runtime parameter curvilinear. This will be
+        adjusted by FLASH at runtime if necessary, so don't worry much.
+    gr_pmrpCurvilinearConserve [BOOLEAN] [FALSE]
+        sets value for PARAMESH runtime parameter curvilinear_conserve. This
+        will be adjusted by FLASH at runtime if necessary, so don't worry much.
+        However, if you manually set gr_pmrpCurvilinear to TRUE, you probably
+        should also set gr_pmrpCurvilinearConserve TRUE.
+    gr_pmrpCylindricalPm [BOOLEAN] [FALSE]
+        sets value for PARAMESH runtime parameter cylindrical_pm This will be
+        adjusted by FLASH at runtime if necessary, so don't worry much.
+    gr_pmrpDiagonals [BOOLEAN] [TRUE]
+        sets value for PARAMESH runtime parameter diagonals
+    gr_pmrpDivergenceFree [INTEGER] [1]
+        Valid Values: -1, 0, 1
+        sets value for PARAMESH runtime parameter divergence_free. 0 means
+        FALSE, 1 means TRUE. -1 means: let FLASH determine the value based on
+        how it has been set up; currently that means to check whether a
+        preprocessor symbol DIVERGENCE_FREE is defined.
+    gr_pmrpEdgeValue [BOOLEAN] [TRUE]
+        sets value for PARAMESH runtime parameter edge_value This will be
+        adjusted by FLASH at runtime if necessary, so don't worry much.
+    gr_pmrpEdgeValueInteg [BOOLEAN] [FALSE]
+        sets value for PARAMESH runtime parameter edge_value_integ This will be
+        adjusted by FLASH at runtime if necessary, so don't worry much.
+    gr_pmrpEmptyCells [BOOLEAN] [FALSE]
+        sets value for PARAMESH runtime parameter empty_cells
+    gr_pmrpForceConsistency [BOOLEAN] [TRUE]
+        sets value for PARAMESH runtime parameter force_consistency
+    gr_pmrpIfaceOff [INTEGER] [0]
+        Valid Values: 0 to INFTY
+        sets value for PARAMESH runtime parameter iface_off
+    gr_pmrpL2p5d [INTEGER] [0]
+        Valid Values: -1, 0, 1
+        sets value for PARAMESH runtime parameter l2p5d. -1 means: let FLASH
+        determine the value based on how it has been set up.
+    gr_pmrpLsingularLine [BOOLEAN] [FALSE]
+        sets value for PARAMESH runtime parameter lsingular_line
+    gr_pmrpMaxblocks [INTEGER] [-1]
+        Valid Values: -1, 0 to INFTY
+        sets value for PARAMESH runtime parameter maxblocks. -1 means: let FLASH
+        determine the value based on how it has been set up.
+    gr_pmrpMflags [INTEGER] [1]
+        Valid Values: Unconstrained
+        sets value for PARAMESH runtime parameter mflags
+    gr_pmrpNboundaries [INTEGER] [6]
+        Valid Values: 4 to INFTY
+        sets value for PARAMESH runtime parameter nboundaries
+    gr_pmrpNdim [INTEGER] CONSTANT [3]
+        Valid Values: Unconstrained
+        sets value for PARAMESH runtime parameter ndim.
+    gr_pmrpNedgevar1 [INTEGER] [-1]
+        Valid Values: -1, 0 to INFTY
+        sets value for PARAMESH runtime parameter nedgevar1. -1 means: let FLASH
+        determine the value based on how it has been set up.
+    gr_pmrpNfacevar [INTEGER] [-1]
+        Valid Values: -1, 0 to INFTY
+        sets value for PARAMESH runtime parameter nfacevar
+    gr_pmrpNfieldDivf [INTEGER] [-1]
+        Valid Values: -1, 0 to INFTY
+        sets value for PARAMESH runtime parameter nfield_divf. -1 means: let
+        FLASH determine the value based on how it has been set up.
+    gr_pmrpNfluxvar [INTEGER] [-1]
+        Valid Values: -1, 0 to INFTY
+        sets value for PARAMESH runtime parameter nfluxvar. -1 means: let FLASH
+        determine the value based on how it has been set up.
+    gr_pmrpNguard [INTEGER] [-1]
+        Valid Values: -1, 0 to INFTY
+        sets value for PARAMESH runtime parameter nguard. -1 means: let FLASH
+        determine the value based on how it has been set up.
+    gr_pmrpNguardWork [INTEGER] [-1]
+        Valid Values: -1, 0 to INFTY
+        sets value for PARAMESH runtime parameter nguard_work. -1 means: let
+        FLASH determine the value based on how it has been set up.
+    gr_pmrpNoPermanentGuardcells [BOOLEAN] [FALSE]
+        sets value for PARAMESH runtime parameter no_permanent_guardcells
+    gr_pmrpNvar [INTEGER] [-1]
+        Valid Values: -1, 0 to INFTY
+        sets value for PARAMESH runtime parameter nvar. -1 means: let FLASH
+        determine the value based on how it has been set up.
+    gr_pmrpNvarWork [INTEGER] [1]
+        Valid Values: 0 to INFTY
+        sets value for PARAMESH runtime parameter nvar_work
+    gr_pmrpNvarcorn [INTEGER] [0]
+        Valid Values: 0 to INFTY
+        sets value for PARAMESH runtime parameter nvarcorn
+    gr_pmrpNvaredge [INTEGER] [0]
+        Valid Values: 0 to INFTY
+        sets value for PARAMESH runtime parameter nvaredge
+    gr_pmrpNxb [INTEGER] [-1]
+        Valid Values: -1, 2, 4, 6, 8, 10, 12, 14, 16 to INFTY
+        sets value for PARAMESH runtime parameter nxb. -1 means: let FLASH
+        determine the value based on how it has been set up.
+    gr_pmrpNyb [INTEGER] [-1]
+        Valid Values: -1, 2, 4, 6, 8, 10, 12, 14, 16 to INFTY
+        sets value for PARAMESH runtime parameter nyb. -1 means: let FLASH
+        determine the value based on how it has been set up.
+    gr_pmrpNzb [INTEGER] [-1]
+        Valid Values: -1, 2, 4, 6, 8, 10, 12, 14, 16 to INFTY
+        sets value for PARAMESH runtime parameter nzb. -1 means: let FLASH
+        determine the value based on how it has been set up.
+    gr_pmrpOutputDir [STRING] ["./"]
+        Valid Values: Unconstrained
+
+    gr_pmrpPolarPm [BOOLEAN] [FALSE]
+        sets value for PARAMESH runtime parameter polar_pm This will be adjusted
+        by FLASH at runtime if necessary, so don't worry much.
+    gr_pmrpPredCorr [BOOLEAN] [FALSE]
+        sets value for PARAMESH runtime parameter pred_corr
+    gr_pmrpSphericalPm [BOOLEAN] [FALSE]
+        sets value for PARAMESH runtime parameter spherical_pm This will be
+        adjusted by FLASH at runtime if necessary, so don't worry much.
+    gr_pmrpTimingMpi [BOOLEAN] [FALSE]
+        sets value for PARAMESH runtime parameter timing_mpi
+    gr_pmrpTimingMpix [BOOLEAN] [FALSE]
+        sets value for PARAMESH runtime parameter timing_mpix
+    gr_pmrpVarDt [BOOLEAN] [FALSE]
+        sets value for PARAMESH runtime parameter var_dt
+
+Grid/GridParticles
+    gr_ptNumToReduce [INTEGER] [10]
+        Valid Values: Unconstrained
+        integer  if particles are to be removed at runtime, how many
+    gr_ptRemove [BOOLEAN] [FALSE]
+        boolean.  This is a switch which determines the action if the number
+    gr_ptRemoveAlgo [INTEGER] [2]
+        Valid Values: Unconstrained
+        integer  The algorithm used in determining which particles to remove
+    keepLostParticles [BOOLEAN] [FALSE]
+
+
+Grid/GridParticles/GridParticlesMove
+    gr_ptMaxPerProcBlockFactor [REAL] [0.70]
+        Valid Values: 0.0 to 1.0
+        When the effective max_particles_per_blk is lowered on a processor
+        because refinement criteria based on the number of particles PER
+        PROCESSOR are used, then the new effective max_particles_per_blk is set
+        to (gr_ptMaxPerProcBlockFactor * pt_maxPerProc). In addition, when the
+        effective min_particles_per_blk is lowered on a processor because
+        refinement criteria based on the number of particles PER PROCESSOR are
+        used, then the new effective min_particles_per_blk is set to (0.5^NDIM *
+        gr_ptMaxPerProcBlockFactor * pt_maxPerProc).
+    gr_ptMaxPerProcBlockNoFuzz [INTEGER] [3]
+        Valid Values: 0 to INFTY
+        A safety margin for estimating the size of basically unpredictable
+        changes of the number of blocks on a processor when remeshing happens.
+    gr_ptMaxPerProcLowerThresh [REAL] [0.0625]
+        Valid Values: 0.0 to 1.0
+        A threshold. When the number of particles on a processor gets above
+        (ptMaxPerProcLowerThresh * number of blocks on the processor), the
+        effective min_particles_per_blk for blocks on this processor may be
+        lowered.
+    gr_ptMaxPerProcUpperThresh [REAL] [0.25]
+        Valid Values: 0.0 to 1.0
+        A threshold. When the number of particles on a processor gets above
+        (ptMaxPerProcUpperThresh * number of blocks on the processor), the
+        effective max_particles_per_blk for blocks on this processor may be
+        lowered.
+    gr_ptRefineOnPtMaxPerProc [BOOLEAN] [FALSE]
+        controls whether refinement criteria based on the number of particles
+        PER PROCESSOR are used. These work by strengthening refinement criteria
+        requested through the max_particles_per_blk and min_particles_per_blk
+        RPs.  Requires RP refine_on_particle_count to be TRUE.
+    gr_ptSieveCheckFreq [INTEGER] [1]
+        Valid Values: Unconstrained
+        integer the frequency for checking the convergence of the
+
+Grid/GridSolvers/IsoBndMultipole
+    mpole_lmax [INTEGER] [0]
+        Valid Values: Unconstrained
+        Maximum multipole moment to use
+    octant [BOOLEAN] [false]
+        In 3d cartesian geometry, assume symmetry about left-facing volume faces
+    quadrant [BOOLEAN] [false]
+        In 2d cylindrical coords, assume symmetry about grid bottom to evolve a
+        quadrant
+
+Grid/GridSolvers/Multigrid
+    mg_maxCorrections [INTEGER] [100]
+        Valid Values: Unconstrained
+        Maximum number of correction V-cycles to employ.
+    mg_maxResidualNorm [REAL] [1.E-6]
+        Valid Values: Unconstrained
+        Apply V-cycle corrections until this residual norm is reached or
+        mg_maxCorrections V-cycles have been performed.
+    mg_printNorm [BOOLEAN] [TRUE]
+        If .true., print the ratio of the residual norm to the source norm as
+        each V-cycle is completed.
+
+IO/IOMain
+    alwaysComputeUserVars [BOOLEAN] [true]
+        Allows the user to force the computation of user variables (i.e. those
+        computed by Grid_computeUserVars) for all checkpoint files.  Defaults to
+        true.  If set to false, lone calls to IO_writeCheckpoint will not call
+        Grid_computeUserVars.  Plotfiles always call Grid_computeUserVars.
+    alwaysRestrictCheckpoint [BOOLEAN] [true]
+        Allows the user to choose whether checkpoint file data is always
+        restricted, so all ancestor blocks have valid data. The default is true.
+        It can be set to false for debugging purposes, in which case only the
+        data from IO_output will be guaranteed to have fully restricted data. 
+        See the User's guide for more information.
+    bytePack [BOOLEAN] [FALSE]
+        compress plotfile data to bytes !!Only implemented with UG in hdf5 !!!
+        !!Not tested
+    checkpointFileIntervalStep [INTEGER] [0]
+        Valid Values: Unconstrained
+        Checkpoint after this many steps
+    checkpointFileIntervalTime [REAL] [1.]
+        Valid Values: Unconstrained
+        Checkpoint after this much time
+    checkpointFileIntervalZ [REAL] [HUGE(1.)]
+        Valid Values: Unconstrained
+
+    checkpointFileNumber [INTEGER] [0]
+        Valid Values: Unconstrained
+        Initial checkpoint file number (used for restarts as well)
+    chkGuardCellsInput [BOOLEAN] CONSTANT [FALSE]
+        if true guardcells are read from the checkpoint file. Default is false
+        where only interior cells are read. Currently only implemented with hdf5
+        parallel paramesh IO implementation
+    chkGuardCellsOutput [BOOLEAN] CONSTANT [FALSE]
+        if true guardcells are written the checkpoint file. Default is false
+        where only interior cells are written. Currently only implemented with
+        hdf5 parallel paramesh IO implementation
+    corners [BOOLEAN] [FALSE]
+        does nothing.  However, it is part of the checkpoint file specification,
+        so we retain the checkpoint entry, but force it to be .false.. It was
+        used in FLASH2 to interpolate the data to the zone corners before
+        storing the data in the plotfile (for creating improved iso-surfaces).
+    fileFormatVersion [INTEGER] [9]
+        Valid Values: Unconstrained
+        Integer value specifying the file format type
+    forcedPlotFileNumber [INTEGER] [0]
+        Valid Values: Unconstrained
+
+    ignoreForcedPlot [BOOLEAN] [false]
+
+    io_writeMscalarIntegrals [BOOLEAN] [FALSE]
+        Should density integrals for all mass scalars be written to the
+        stats_file (.dat file)?  This runtime parameter is handled in the
+        default IO_writeIntegralQuantities implementation in IOMain, and may
+        have no effect if a simulation overrides that implementation.
+    memory_stat_freq [INTEGER] [100000]
+        Valid Values: Unconstrained
+        Specify the number of timesteps between memory statistic dumps to
+        flash.log !!NOT Yet Implemented in F3
+    outputSplitNum [INTEGER] [1]
+        Valid Values: Unconstrained
+        Split checkpoint, plotfiles, particle plots into this many files per
+        dump Not fully implemented, only hdf5 parallel. use at own risk
+    output_directory [STRING] [""]
+        Valid Values: Unconstrained
+        output dir for checkpoint file, can be absolute or relative path
+    plotFileIntervalStep [INTEGER] [0]
+        Valid Values: Unconstrained
+        Write a plotfile after this many steps
+    plotFileIntervalTime [REAL] [1.]
+        Valid Values: Unconstrained
+        Write a plotfile after this much time
+    plotFileIntervalZ [REAL] [HUGE(1.)]
+        Valid Values: Unconstrained
+        Write a plotfile after this change in z
+    plotFileNumber [INTEGER] [0]
+        Valid Values: Unconstrained
+        Initial plot file number
+    plot_grid_var_1 [STRING] ["none"]
+        Valid Values: Unconstrained
+        Allows user to output specific scratch grid vars Up to 12 choices are
+        allowed.  If plot_grid_var_X is set to "none" then no variable will be
+        saved. The parameter should have the same name as the variable
+        corresponding to it. For exampe, if a variable is declared GRID_VAR
+        vrtz, to write that grid variable to a plotfile a parameter should be
+        declared as PARAMETER plot_grid_var_X STRING "vrtz"
+    plot_grid_var_10 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    plot_grid_var_11 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    plot_grid_var_12 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    plot_grid_var_2 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    plot_grid_var_3 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    plot_grid_var_4 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    plot_grid_var_5 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    plot_grid_var_6 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    plot_grid_var_7 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    plot_grid_var_8 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    plot_grid_var_9 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    plot_var_1 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    plot_var_10 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    plot_var_11 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    plot_var_12 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    plot_var_13 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_14 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_15 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_16 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_17 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_18 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_19 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_2 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    plot_var_20 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_21 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_22 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_23 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_24 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_25 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_26 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_27 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_28 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_29 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_3 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    plot_var_30 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_31 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_32 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_33 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_34 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_35 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_36 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_37 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_38 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_39 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_4 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    plot_var_40 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_41 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_42 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_43 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_44 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_45 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_46 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_47 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_48 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_49 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_5 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    plot_var_50 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_51 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_52 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_53 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_54 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_55 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_56 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_57 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_58 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_59 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_6 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    plot_var_60 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_61 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_62 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_63 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_64 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_65 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_66 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_67 [STRING] ["none"]
+        Valid Values: Unconstrained
+        (automatically generated by setup)
+    plot_var_7 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    plot_var_8 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    plot_var_9 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    plotfileGridQuantityDP [BOOLEAN] [false]
+        If true, this sets the grid variables (unk, facevars, etc.) to be output
+        in double precision in plotfiles. Default value is false.
+    plotfileMetadataDP [BOOLEAN] [false]
+        Sets the floating point grid metadata fields to be written in double
+        precision if true in plotfiles.  Default value is false
+    prof_file [STRING] ["profile.dat"]
+        Valid Values: Unconstrained
+        !!NOT yet implemented yet in F3
+    rolling_checkpoint [INTEGER] [10000]
+        Valid Values: Unconstrained
+        Checkpoint file number cycling span. Only the last rolling_checkpoint
+        files are kept.
+    rss_limit [REAL] [-1.0]
+        Valid Values: Unconstrained
+        Maximum value (in MB) of largest resident set size (rss) before we
+        checkpoint and exit. Negative for no limit.  Only active if memory
+        statistics are being kept.
+    stats_file [STRING] ["flash.dat"]
+        Valid Values: Unconstrained
+        Name of the file integral quantities are written to (.dat file)
+    summaryOutputOnly [BOOLEAN] [false]
+        Makes FLASH write integrated quantities, i.e. summary data, only. FLASH
+        will only write a checkpoint, plot, or particle file if the user creates
+        a .dump_plotfile, .dump_checkpoint, .dump_restart, or
+        .dump_particle_file file.  A .kill file will still kill FLASH.
+    typeMatchedXfer [BOOLEAN] [true]
+        Ensures that floating point data transfers are type matched when using
+        HDF5.  This prevents HDF5 reverting to independent parallel I/O.
+    useCollectiveHDF5 [BOOLEAN] [true]
+        If true, all non-header, non-list datasets will be written using HDF5's
+        collective output mode otherwise, the independent access mode is used. 
+        Default value is true.
+    useLegacyLabels [BOOLEAN] [true]
+        If true, this stores mesh labels e.g. 'dens', 'pres' in a IO library
+        dataspace of 4 characters.  We may want to set it to false to use larger
+        labels e.g. 'density'
+    wall_clock_checkpoint [REAL] [43200.]
+        Valid Values: Unconstrained
+        Checkpoint after XX seconds (wallclock time) This is useful to ensure
+        that the job outputs a restart file before a queue window closes.
+    wr_integrals_freq [INTEGER] [1]
+        Valid Values: Unconstrained
+        Number of timesteps between writing to flash.dat
+
+IO/IOParticles
+    particleFileIntervalStep [INTEGER] [0]
+        Valid Values: Unconstrained
+        write a particle file after this many steps
+    particleFileIntervalTime [REAL] [1.]
+        Valid Values: Unconstrained
+        Write a particle plot after this much time
+    particleFileIntervalZ [REAL] [HUGE(1.)]
+        Valid Values: Unconstrained
+        write a particle file after this change in redshift
+    particleFileNumber [INTEGER] [0]
+        Valid Values: Unconstrained
+        Initial particle plot file number
+    writeParticleAll [BOOLEAN] [true]
+        Write the complete particles array to a particle file.
+    writeParticleSubset [BOOLEAN] [false]
+        Write user-defined subset(s) of the particles array to
+
+Particles/ParticlesInitialization
+    pt_resetTag [BOOLEAN] [FALSE]
+
+
+Particles/ParticlesMain
+    particle_attribute_1 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    particle_attribute_10 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    particle_attribute_2 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    particle_attribute_3 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    particle_attribute_4 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    particle_attribute_5 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    particle_attribute_6 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    particle_attribute_7 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    particle_attribute_8 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    particle_attribute_9 [STRING] ["none"]
+        Valid Values: Unconstrained
+
+    pt_dtChangeTolerance [REAL] [0.4]
+        Valid Values: 0.0 to INFTY
+        EstiMidpoint does predictor step if time step change is less than this
+        percentage. Set to 0 to always do Euler, set to huge number to always
+        use estim. midpoints
+    pt_dtFactor [REAL] [0.5]
+        Valid Values: Unconstrained
+        Factor multiplying dx/|v| in setting particle timestep limit
+    pt_logLevel [INTEGER] [700]
+        Valid Values: 0 to INFTY
+        controls the level of logging for some conditions. See Particles.h for
+        relevant PT_LOGLEVEL_* definitions.
+    pt_maxPerProc [INTEGER] [1000]
+        Valid Values: Unconstrained
+        Maximum number of particles per processor -- too small will cause a
+        crash at reallocation
+    pt_numAtOnce [INTEGER] [1]
+        Valid Values: Unconstrained
+        To be used when reading the particles from some file
+    pt_small [REAL] [1.0E-10]
+        Valid Values: Unconstrained
+        If velocities are greater than this, then time stepping may be limited
+    useParticles [BOOLEAN] [TRUE]
+        Whether to advance particles [TRUE] or not [FALSE]
+
+Particles/ParticlesMapping/meshWeighting/CIC
+    smearLen [INTEGER] [1]
+        Valid Values: Unconstrained
+
+
+PhysicalConstants/PhysicalConstantsMain
+    pc_unitsBase [STRING] ["CGS"]
+        Valid Values: Unconstrained
+        Base Unit system for Physical Constants -- can be "CGS" or "MKS"
+
+Simulation/SimulationMain
+    basenm [STRING] ["flash_"]
+        Valid Values: Unconstrained
+        Base name for output files
+
+Simulation/SimulationMain/RadCosmo
+    IC_file [STRING] ["temp"]
+        Valid Values: Unconstrained
+
+    J21 [REAL] [0.0]
+        Valid Values: Unconstrained
+
+    abd [REAL] [4.3e-5]
+        Valid Values: Unconstrained
+
+    abhe [REAL] [0.08]
+        Valid Values: Unconstrained
+
+    pt_numX [INTEGER] [1]
+        Valid Values: Unconstrained
+
+    pt_numY [INTEGER] [1]
+        Valid Values: Unconstrained
+
+    pt_numZ [INTEGER] [1]
+        Valid Values: Unconstrained
+
+    xe_residual [REAL] [3.0e-4]
+        Valid Values: Unconstrained
+
+
+flashUtilities/jeans_overdens_sink_refinement
+    init_min_refine_level [INTEGER] [3]
+        Valid Values: Unconstrained
+
+    jeans_center_range [REAL] [0.0]
+        Valid Values: Unconstrained
+
+    jeans_center_x [REAL] [0.0]
+        Valid Values: Unconstrained
+
+    jeans_center_y [REAL] [0.0]
+        Valid Values: Unconstrained
+
+    jeans_center_z [REAL] [0.0]
+        Valid Values: Unconstrained
+
+    jeans_dens_thresh [REAL] [0.0]
+        Valid Values: Unconstrained
+
+    jeans_deref [REAL] [12.0]
+        Valid Values: Unconstrained
+
+    jeans_ref [REAL] [6.0]
+        Valid Values: Unconstrained
+
+    phi [REAL] [0.0]
+        Valid Values: Unconstrained
+
+    refineNestedRegions [BOOLEAN] [false]
+
+    refineOnDarkMatterParticles [BOOLEAN] [false]
+
+    refineOnJeansLength [BOOLEAN] [false]
+
+    refineOnSinkParticles [BOOLEAN] [false]
+
+    refine_on_var_thresh [BOOLEAN] [false]
+
+    refine_var_thresh [STRING] ["none"]
+        Valid Values: Unconstrained
+
+
+flashUtilities/prolong_particles
+    SmoothParticles [BOOLEAN] [FALSE]
+
+    lrefine_smooth_max [INTEGER] [1]
+        Valid Values: Unconstrained
+
+    lrefine_smooth_min [INTEGER] [1]
+        Valid Values: Unconstrained
+
+    max_num_smooth_part [INTEGER] [10000]
+        Valid Values: Unconstrained
+
+    smooth_radius_factor [REAL] [0.3]
+        Valid Values: Unconstrained
+
+
+monitors/Logfile/LogfileMain
+    log_file [STRING] ["flash.log"]
+        Valid Values: Unconstrained
+        Name of log file to create
+    run_comment [STRING] ["FLASH 3 run"]
+        Valid Values: Unconstrained
+        Comment for run
+    run_number [STRING] ["1"]
+        Valid Values: Unconstrained
+        Identification number for run
+
+monitors/Timers/TimersMain/MPINative
+    eachProcWritesSummary [BOOLEAN] [FALSE]
+        Should each process write its summary to its own file?  If true, each
+        process will write its summary to a file named timer_summary_<processor
+        id>
+    writeStatSummary [BOOLEAN] [TRUE]
+        Should timers write the max/min/avg values for timers?
+
+physics/Cosmology/CosmologyMain
+    CosmologicalConstant [REAL] [0.7]
+        Valid Values: Unconstrained
+        Ratio of the mass density equivalent in the cosmological constant (or
+        dark energy) to the closure density at the present epoch
+    HubbleConstant [REAL] [2.1065E-18]
+        Valid Values: Unconstrained
+        Value of the Hubble constant (\dot{a}/a) in sec^-1 at the present epoch
+    MaxScaleChange [REAL] [HUGE]
+        Valid Values: Unconstrained
+        Maximum permitted fractional change in the scale factor during each
+        timestep
+    OmegaBaryon [REAL] [0.05]
+        Valid Values: Unconstrained
+        Ratio of baryonic mass density to closure density at the present epoch
+        (must be <= OmegaMatter!)
+    OmegaMatter [REAL] [0.3]
+        Valid Values: Unconstrained
+        Ratio of total mass density to closure density at the present epoch
+    OmegaRadiation [REAL] [5.E-5]
+        Valid Values: Unconstrained
+        Ratio of total radiation density to closure density at the present epoch
+    computeRedshiftOnly [BOOLEAN] [FALSE]
+
+    useCosmology [BOOLEAN] [TRUE]
+        Are we using cosmological expansion?
+
+physics/Diffuse
+    useDiffuse [BOOLEAN] CONSTANT [FALSE]
+        flags whether the Diffuse unit is being used at all
+
+physics/Eos/EosMain
+    eintSwitch [REAL] [0.0]
+        Valid Values: Unconstrained
+        a rarely used switch which ensures that internal energy calculations
+        maintain sufficient precision. Important only if energyTotal is
+        dominated by energyKinetic. If (energyInternal <
+        eintSwitch*energyKinetic) then some routines (Eos/Helmholtz,
+        Hydro/hy_updateSoln) will NOT calculate energyInternal by subtraction,
+        but rather through direct calculation.
+    eos_entrEleScaleChoice [INTEGER] [6]
+        Valid Values: 1 to 8
+        selects a scale variant for representing electron entropy. See code in
+        eos_idealGamma for the meaning of the various choices. The choice that
+        corresponds most closely to the Sackur-Tetrode equation in physical
+        units should be 3, closely followed by 2.
+    eos_singleSpeciesA [REAL] [1.00]
+        Valid Values: 0.0 to INFTY
+        Nucleon number for the gas (available ONLY for Eos with single species)
+    eos_singleSpeciesZ [REAL] [1.00]
+        Valid Values: 0.0 to INFTY
+        Proton number for the gas (available ONLY for Eos with single species)
+    gamma [REAL] [1.6667]
+        Valid Values: 0.0 to INFTY
+        Ratio of specific heats for gas (available ONLY for Eos/Gamma)
+    threadEosWithinBlock [BOOLEAN] [FALSE]
+
+
+physics/Gravity
+    grav_boundary_type [STRING] ["isolated"]
+        Valid Values: Unconstrained
+        Type of gravitational boundary condition if a Poisson solve is used for
+        Gravity; string-valued version of grav_boundary. Accepts: "isolated",
+        "periodic", "dirichlet", and maybe others, depending on the Poisson
+        solver used. This is declared in the stub level of the Gravity unit to
+        allow the Grid unit to refer to this runtime parameter even when no
+        Gravity implementation is included.
+
+physics/Gravity/GravityMain
+    useGravity [BOOLEAN] [TRUE]
+        Should the gravity calculations be performed?
+
+physics/Gravity/GravityMain/Poisson
+    grav_temporal_extrp [BOOLEAN] [FALSE]
+        extrapolate or otherwise rescale
+    grav_unjunkPden [BOOLEAN] [TRUE]
+        controls whether Gravity_potentialListOfBlocks attempts to restore the
+        part of the "pden" ("particle density") UNK variable that is due to
+        particles, or leaves "pden" as it is, after a Poisson equation solve.
+        This only applies meaningfully when a "pden" variable is declared and
+        the gravitational potential is calculated by solving a Poisson equation
+        whose right-hand side includes a mass distribution to which both
+        hydrodynamic fluid density and massive particles contribute. The "pden"
+        variable will have been set to the sum of the fluid density ("dens"
+        variable) and the density resulting from mapping massive particles to
+        the mesh, so that is what remains in "pden" when grav_unjunkPden is set
+        to FALSE. Otherwise, "dens" will be subtraced from "pden" before
+        Gravity_potentialListOfBlocks returns, and "pden" will be left
+        containing only the mass density that is due to particles.
+    point_mass [REAL] [0.e0]
+        Valid Values: Unconstrained
+        mass of the central point-like object
+    point_mass_rsoft [REAL] [0.e0]
+        Valid Values: Unconstrained
+        softening radius for the point-like mass (in units of number of the
+        finest level cells)
+    updateGravity [BOOLEAN] [TRUE]
+        allow gravity value to be updated
+
+physics/Hydro/HydroMain
+    UnitSystem [STRING] ["none"]
+        Valid Values: Unconstrained
+        System of Units
+    cfl [REAL] [0.8]
+        Valid Values: Unconstrained
+        Courant factor
+    irenorm [INTEGER] [0]
+        Valid Values: Unconstrained
+        Renormalize the abundances before eos
+    threadHydroBlockList [BOOLEAN] [FALSE]
+
+    threadHydroWithinBlock [BOOLEAN] [FALSE]
+
+    updateHydroFluxes [BOOLEAN] [TRUE]
+        whether fluxes computed by Hydro should be used to update the solution
+        (currently, probably only used in split PPM Hydro)
+    useHydro [BOOLEAN] [TRUE]
+
+    use_cma_advection [BOOLEAN] [FALSE]
+
+    use_cma_flattening [BOOLEAN] [FALSE]
+        use the flattening procedure for the abundances as described in the CMA
+        paper
+    use_cma_steepening [BOOLEAN] [FALSE]
+
+    use_steepening [BOOLEAN] [TRUE]
+
+
+physics/Hydro/HydroMain/split/PPM
+    charLimiting [BOOLEAN] [TRUE]
+        use characteristic variables for slope limiting
+    cvisc [REAL] [0.1]
+        Valid Values: Unconstrained
+        Artificial viscosity constant
+    dp_sh [REAL] [0.33]
+        Valid Values: Unconstrained
+
+    dp_sh_md [REAL] [0.33]
+        Valid Values: Unconstrained
+        pressure jump for multi-dimensional shock detection
+    epsiln [REAL] [0.33]
+        Valid Values: Unconstrained
+        PPM shock detection parameter
+    hy_eosModeAfter [STRING] ["dens_ie"]
+        Valid Values: "dens_ie", "dens_pres", "dens_temp", "dens_ie_all",
+        "dens_ie_scatter", "dens_ie_gather", "dens_ie_sele_gather",
+        "dens_ie_shocksele_gather", "dens_temp_equi", "dens_temp_all",
+        "dens_temp_gather", "dens_ie_recal_gather"
+        Eos mode to apply at the end of a hydro sweep, after hy_ppm_updateSoln
+        is done. Some meaningful choices are (1): == eosMode (traditional), (2):
+        "dens_ie" for MODE_DENS_EI (which are normally the same!).
+    hy_fluxRepresentation [STRING] ["fluxes"]
+        Valid Values: "hybrid", "fluxes", "auto"
+        determines the nature of the data stored in flux arrays. With this
+        parameter set to "fluxes", the fluxes and cell volumes used in the Hydro
+        method are calculated correctly using geometry measures (in units
+        matching those in which coordinates are represented). If
+        hy_fluxRepresentation is "hybrid", fluxes are calculated in a simpler
+        way; for example, the fluxes in Cartesian coordinates use the convention
+        Face Area == 1 (and thus Cell Volume == dx during the X sweep, etc.).
+        Both settings lead to a correct algorithm, because what is ultimately
+        applied in the Hydro update is of the form fluxes times dt/CellVolume,
+        so cell areas (thus fluxes) and volumes can be multiplied by an
+        arbitrary constant (as long as it is done consistently) without changing
+        results (except for rounding effects). The setting here must match
+        Paramesh's understanding of what the "fluxes" are that it is being
+        passed if Grid_conserveFluxes is called: If hy_fluxRepresentation is
+        "fluxes", then Paramesh4 should have set consv_fluxes==.true., 
+        consv_flux_densities==.false. If hy_fluxRepresentation is "hybrid", then
+        Paramesh4 should have set consv_fluxes==.false.,
+        consv_flux_densities==.true. Hydro_init will try to set Paramesh to the
+        right mode if possible, this requires Paramesh to be compiled in LIBRARY
+        mode. If this fails, the flux representation will be modified to
+        correspond to what the Grid unit supports. A third possible value for
+        hy_fluxRepresentation is "auto", in which case the Hydro code unit will
+        pick either "fluxes" or "hybrid" based on geometry and support in Grid.
+    hybrid_riemann [BOOLEAN] [FALSE]
+        use HLLE in shocks to remove odd-even decoupling
+    igodu [INTEGER] [0]
+        Valid Values: Unconstrained
+        Use Godunov method
+    iplm [INTEGER] [0]
+        Valid Values: Unconstrained
+        Use linear profiles
+    leveque [BOOLEAN] [FALSE]
+        modify states due to gravity -- leveque's way.
+    nriem [INTEGER] [10]
+        Valid Values: Unconstrained
+        No. of iterations in Riemann solver
+    omg1 [REAL] [0.75]
+        Valid Values: Unconstrained
+        PPM dissipation parameter omega1
+    omg2 [REAL] [10.]
+        Valid Values: Unconstrained
+        PPM dissipation parameter omega2
+    ppmEintCompFluxConstructionMeth [INTEGER] [0]
+        Valid Values: -1, 0 to 7
+
+    ppmEintFluxConstructionMeth [INTEGER] [0]
+        Valid Values: -1, 0 to 2, 4 to 6
+        selects a method for constructing energy fluxes, for internal energy,
+        from the results of calling the Riemann solver. Note that the eintSwitch
+        runtime parameter controls whether internal energy fluxes, rather than
+        total energy fluxes, are sometimes used for updating the energy
+        variables (both internal and total) in a given cell (depending on the
+        ratio of kinetic to internal energy in that cell).
+    ppmEnerCompFluxConstructionMeth [INTEGER] [0]
+        Valid Values: 0 to 7, 11 to 17, 20 to 27
+
+    ppmEnerFluxConstructionMeth [INTEGER] [0]
+        Valid Values: 0 to 2, 4 to 6, 11 to 12, 14 to 16, 20 to 27
+        selects a method for constructing energy fluxes, for total
+        (internal+kinetic) energy, from the results of calling the Riemann
+        solver.
+    ppm_modifystates [BOOLEAN] [FALSE]
+        modify states due to gravity -- our way.
+    rieman_tol [REAL] [1.0e-5]
+        Valid Values: Unconstrained
+        Converge factor for Riemann solver
+    small [REAL] [1.E-10]
+        Valid Values: Unconstrained
+        Cutoff value ... DEV: for what?
+    smalle [REAL] [1.E-10]
+        Valid Values: Unconstrained
+        Cutoff value for energy
+    smallp [REAL] [1.E-10]
+        Valid Values: Unconstrained
+        Cutoff value for pressure
+    smallt [REAL] [1.E-10]
+        Valid Values: Unconstrained
+        Cutoff value for temperature
+    smallu [REAL] [1.E-10]
+        Valid Values: Unconstrained
+        Cutoff value for velocity
+    smallx [REAL] [1.E-10]
+        Valid Values: Unconstrained
+        Cutoff value for abundances
+    smlrho [REAL] [1.E-10]
+        Valid Values: Unconstrained
+        Cutoff value for density
+    vgrid [REAL] [0.]
+        Valid Values: Unconstrained
+        Scale factor for grid velocity
+
+physics/RadTrans
+    useRadTrans [BOOLEAN] [FALSE]
+        flag to indicate whether radiative transfer is in use
+
+physics/TreeCol
+    useTreeCol [BOOLEAN] [FALSE]
+        Whether TreeCol calculations should be performed.
+
+physics/materialProperties/Conductivity
+    useConductivity [BOOLEAN] CONSTANT [FALSE]
+        flags whether the conductivity material property is being used
+
+physics/materialProperties/MagneticResistivity
+    useMagneticResistivity [BOOLEAN] CONSTANT [FALSE]
+        flags whether the magnetic resistivity material property is being used
+
+physics/materialProperties/MassDiffusivity
+    useMassDiffusivity [BOOLEAN] CONSTANT [FALSE]
+        -- allows the mass diffusivity to be turned off at runtime, even if the
+        unit is included in the simulation
+
+physics/materialProperties/Opacity
+    useOpacity [BOOLEAN] CONSTANT [FALSE]
+        flags whether the Opacity unit is being used at all
+
+physics/materialProperties/Viscosity
+    useViscosity [BOOLEAN] CONSTANT [FALSE]
+        flags whether the viscosity material property is being used
+
+physics/sourceTerms/Burn
+    useBurn [BOOLEAN] [FALSE]
+        shall I burn?
+
+physics/sourceTerms/Chem
+    useChem [BOOLEAN] [FALSE]
+
+
+physics/sourceTerms/Chem/ChemMain
+    jeans_floor_ref [INTEGER] [24]
+        Valid Values: Unconstrained
+
+
+physics/sourceTerms/ColumnDensity
+    useColumnDensity [BOOLEAN] [FALSE]
+
+
+physics/sourceTerms/Cool
+    useCool [BOOLEAN] [FALSE]
+        Runtime control for turning off cooling
+
+physics/sourceTerms/Deleptonize
+    threadDelepBlockList [BOOLEAN] [FALSE]
+
+    threadDelepWithinBlock [BOOLEAN] [FALSE]
+
+    useDeleptonize [BOOLEAN] [FALSE]
+
+
+physics/sourceTerms/EnergyDeposition
+    useEnergyDeposition [BOOLEAN] CONSTANT [FALSE]
+        flag indicating whether to use EnergyDeposition unit
+
+physics/sourceTerms/Flame
+    useFlame [BOOLEAN] CONSTANT [FALSE]
+        Whether the flame should be advanced.
+
+physics/sourceTerms/Heat
+    useHeat [BOOLEAN] [FALSE]
+        runtime control for turning the heat on or off
+
+physics/sourceTerms/Heatexchange
+    useHeatexchange [BOOLEAN] CONSTANT [FALSE]
+
+
+physics/sourceTerms/Ionize
+    useIonize [BOOLEAN] [FALSE]
+        Whether Ionize calculations should be performed.
+
+physics/sourceTerms/Photoionization
+    usePhotoionization [BOOLEAN] [FALSE]
+
+
+physics/sourceTerms/Photoionization/PhotoionizationMain
+    sigma_hmin [REAL] [2.0e-17]
+        Valid Values: Unconstrained
+
+
+physics/sourceTerms/Polytrope
+    usePolytrope [BOOLEAN] [FALSE]
+        Runtime switch for turning the polytropic eos on/off
+
+physics/sourceTerms/PrimordialChemistry
+    usePrimordialChemistry [BOOLEAN] [FALSE]
+
+
+physics/sourceTerms/RadiationField
+    useRadiationField [BOOLEAN] [FALSE]
+
+
+physics/sourceTerms/RadiationField/RadiationFieldMain
+    photon_flux_bin1 [REAL] [0.0]
+        Valid Values: Unconstrained
+
+    photon_flux_bin2 [REAL] [0.0]
+        Valid Values: Unconstrained
+
+    photon_flux_bin3 [REAL] [0.0]
+        Valid Values: Unconstrained
+
+    photon_flux_hmin [REAL] [0.0]
+        Valid Values: Unconstrained
+
+    photon_flux_htwo [REAL] [0.0]
+        Valid Values: Unconstrained
+
+    turn_on_rad_trans_redshift [REAL] [0.0]
+        Valid Values: Unconstrained
+
+    turn_on_redshift [REAL] [0.0]
+        Valid Values: Unconstrained
+
+
+physics/sourceTerms/Stir
+    useStir [BOOLEAN] CONSTANT [FALSE]
+        Runtime switch for turning stirring on/off
+
+physics/sourceTerms/Turb
+    useTurb [BOOLEAN] [TRUE]
+        flags whether the Turbulence unit is being used

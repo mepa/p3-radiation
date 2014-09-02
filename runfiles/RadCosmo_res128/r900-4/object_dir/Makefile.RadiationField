@@ -1,0 +1,10 @@
+
+RadiationField += RadiationField.o \
+		 RadiationField_init.o \
+		 RadiationField_finalize.o \
+		 RadiationField_interface.o \
+		 RadiationField_computeDt.o \
+		 RadiationField_sendOutputData.o
+
+RadiationField += RadiationField_data.o \
+		 rf_calcEffectiveFlux.o
