@@ -1,0 +1,318 @@
+run_comment                    =  "RadCosmo: testing on stampede"
+
+#-----------------------------------------------------------------------------
+#  I/O and timestep control
+#-----------------------------------------------------------------------------
+
+basenm                         =  "radCosmo_"
+log_file                       =  "radCosmo.log"
+#restart                        =  .false.
+restart                        =  .true.
+checkpointFileNumber           = 33
+#plotFileNumber                 = 138
+
+zInitial			=  145.51
+#zFinal                         =  10
+tmax                           =  1.E99
+
+wall_clock_checkpoint          =  3500000.   # [43200]
+nend                           =  1000	     # [100]
+
+checkpointFileIntervalZ        =  1000.      # [HUGE(1.)]
+checkpointFileIntervalTime     =  9.0e16     # [1.]
+checkpointFileIntervalStep     =  1
+
+plotFileIntervalZ              =  1000.0
+plotFileIntervalTime           =  1.0e99
+plotFileIntervalStep           =  50000
+
+particleFileIntervalZ          =  1000.
+particleFileIntervalTime       =  1.E99
+particleFileIntervalStep       =  50000
+
+dtinit                         =  1.0e11 # 3200 yrs
+dtmin                          =  1.E9	 # 32 yrs	# [1.E-10] 1.E0
+dtmax                          =  1.E15  # 32 mln yrs
+
+#-----------------------------------------------------------------------------
+#IO Plotvars
+#-----------------------------------------------------------------------------
+
+plot_var_1 = "dens"
+plot_var_2 = "pde"
+plot_var_3 = "temp"
+plot_var_4 = "none"
+
+#-----------------------------------------------------------------------------
+#  Computational domain
+#-----------------------------------------------------------------------------
+# 1 Mpc = 3.0856775807E24 cm
+
+xmin                           =  0.
+xmax                           =  3.0856775807E24
+ymin                           =  0.
+ymax                           =  3.0856775807E24 
+zmin                           =  0.
+zmax                           =  3.0856775807E24 
+
+nblockx                        =  1
+nblocky                        =  1
+nblockz                        =  1
+
+geometry                       =  "cartesian"
+
+xl_boundary_type               =  "periodic"
+xr_boundary_type               =  "periodic"
+yl_boundary_type               =  "periodic"
+yr_boundary_type               =  "periodic"
+zl_boundary_type               =  "periodic"
+zr_boundary_type               =  "periodic"
+
+
+#-----------------------------------------------------------------------------
+#  Refinement criteria
+#-----------------------------------------------------------------------------
+# 32^3 : lrefine_min = 3
+# 64^3 : lrefine_min = 4
+# 128^3 : lrefine_min = 5
+# 256^3 : lrefine_min = 6
+
+### Grid paramesh parameters ###
+nrefs			       = 1  # [2] (?? not in ctss)
+lrefine_max                    = 24 # [1]
+lrefine_min                    = 5  # [1]
+
+refine_on_particle_count       = .false. # [false]
+
+### flashUtilities/jeans_overdens_sink_refinement parameters ###
+
+refine_on_var_thresh           = .true.  # [false] 
+refine_var_thresh              = "dens"  # ["none"] 
+init_min_refine_level          = 5       # [3]
+phi 			       = -0.3    # [0.0]
+
+refine_var_1                   = "none"
+refine_filter_1                = 0.5
+derefine_cutoff_1              = 0.40
+refine_cutoff_1                = 0.50
+refine_on_particle_count       = .false.
+
+refineOnDarkMatterParticles    = .false. # [false]
+refineOnSinkParticles          = .false. # [false]
+refineNestedRegions	       = .false. # [false]
+
+### Jeans Refinement
+refineOnJeansLength            = .true.  # [false] 
+
+jeans_ref		       = 24.0    # [6.0]
+jeans_deref		       = 48.0    # [12.0] 
+
+## Only enforce jeans refinement criteria
+## inside the bounds described below
+jeans_center_x = 7.78e17
+jeans_center_y = 8.15e17
+jeans_center_z = 7.78e17
+
+## if jeans_center_range = 0.0, 
+## the above condition is not enforced
+jeans_center_range = 0.0
+
+## only cells with max density above
+## jeans_dens_thresh will be refined
+jeans_dens_thresh = 1.0e-18
+
+
+#-----------------------------------------------------------------------------
+#  Particles
+#-----------------------------------------------------------------------------
+
+useParticles             = .true. 
+pt_maxPerProc            =  1000000
+
+IC_file = "/data1/r900-4/mepa/data/RadCosmo_res128/"
+
+# Resolution of initial conditions:
+pt_numX                  =  128 
+pt_numY                  =  128 
+pt_numZ                  =  128 
+
+
+###############################################################################
+# SOURCE TERMS
+###############################################################################
+
+#-----------------------------------------------------------------------------
+# Chemistry Module
+#-----------------------------------------------------------------------------
+
+useChem = .true.
+
+abhe = 0.08	
+abd = 4.3e-5
+
+xe_residual = 3.0e-4
+
+jeans_floor_ref		       = 21      # [24]
+
+#-----------------------------------------------------------------------------
+# ColumnDensity Module
+#-----------------------------------------------------------------------------
+	
+useColumnDensity = .true.
+
+#-----------------------------------------------------------------------------
+# Photoionization Module
+#-----------------------------------------------------------------------------
+	
+usePhotoionization	= .true.
+sigma_hmin		= 1.039321e-17
+
+#-----------------------------------------------------------------------------
+# Radiationfield Module
+#-----------------------------------------------------------------------------
+	
+useRadiationField          = .true.
+turn_on_redshift           = 17.5
+turn_on_rad_trans_redshift = 0
+photon_flux_hmin   	   = 1.25657e7 # 3.25954e7
+photon_flux_htwo   	   = 1.07387e6 # 2.78482e6
+photon_flux_bin1   	   = 1.07387e5
+photon_flux_bin2   	   = 2.51969e4
+photon_flux_bin3   	   = 3.94722
+
+J21 			   = 0.0 # [0.0] (may not need this?)
+
+
+###############################################################################
+# Physics
+###############################################################################
+
+#-----------------------------------------------------------------------------
+#  Cosmology
+#-----------------------------------------------------------------------------
+
+# from ctss:
+OmegaMatter                = 0.272   
+OmegaBaryon                = 0.0455 
+CosmologicalConstant       = 0.728 
+HubbleConstant             = 2.278151e-18 
+
+MaxScaleChange            = 0.05
+
+#-----------------------------------------------------------------------------
+#  Gravity
+#-----------------------------------------------------------------------------
+
+#igrav                          =  1
+grav_boundary_type             = "periodic"
+mg_maxResidualNorm             = 1.0E-6 # [1.0E-6]
+#mg_maxResidualNorm             = 1.0E-5 # (ctss)
+mg_printNorm                   = .true.
+
+#-----------------------------------------------------------------------------
+#  Hydrodynamics
+#-----------------------------------------------------------------------------
+
+gamma                          =  1.66666666667
+#eintSwitch                     =  1.0e30	
+eintSwitch                     =  1.0		# [0.0] Choose carefully
+#eintSwitch                     =  0.1		# (ctss)
+#eintSwitch                     =  1.0e-3
+cfl                            =  0.8
+cvisc                          =  0.1
+nriem                          =  25
+
+small                          =  1.0E-40
+smlrho                         =  1.0E-40
+smallp                         =  1.0E-40
+#smalle                         =  1.E8		# (ctss)
+#smalle                         =  1.0E-40
+smalle                         =  1.0
+#smalle                         =  1.0E8	# (ctss)
+#smallt                         =  1.		# (ctss)
+smallt                         =  1.0E-10
+smallu                         =  1.0E-40
+smallx                         =  1.0E-30
+
+use_steepening                 = .false.  # [.true.]
+use_cma_advection              = .true.   # [.false.]
+use_cma_flattening             = .false.  # [.false.]
+use_cma_steepening             = .false.
+
+### -------------------------------------------------------------##
+###  SWITCHES SPECIFIC TO THE UNSPLIT HYDRO SOLVER               ##
+#	I. INTERPOLATION SCHEME:
+#order		= 2      # Interpolation order (First/Second order)
+#slopeLimiter    = "mc"   # Slope limiters (minmod, mc, vanLeer, hybrid, limited)
+#LimitedSlopeBeta= 1.     # Slope parameter for the "limited" slope by Toro
+charLimiting	= .true. # Characteristic limiting vs. Primitive limiting
+#
+#
+##	II. RIEMANN SOLVERS:
+#RiemannSolver	= "Roe"       # Roe, HLL, HLLC, LF
+#shockInstabilityFix = .false. # Carbuncle instability fix for the Roe solver
+#
+#
+##	III. STRONG SHOCK HANDELING SCHEME:
+#shockDetect	= .false.     # Shock Detect for numerical stability
+### -------------------------------------------------------------##
+
+
+###############################################################################
+# FLASH UTILITIES
+###############################################################################
+
+#-----------------------------------------------------------------------------
+# Smooth Module
+#-----------------------------------------------------------------------------
+
+SmoothParticles = .true.     # [false]
+
+lrefine_smooth_min = 13
+lrefine_smooth_max = 13
+max_num_smooth_part = 10000
+
+
+# #-----------------------------------------------------------------------------
+# # Sink Particles (physical units)
+# #-----------------------------------------------------------------------------
+#
+# max_gas_density = 2.0e-21                 # 10^3 particles/cc
+# r_accretion = 5.0e20                      # few times cell_size
+# sinkmerging = 0                           # sink particles don't merge
+# isinks = .true.
+# grav_softening_type_gas = "linear"
+# grav_softening_type_sinks = "spline"
+# r_softening = 5.e20
+# tstep_grav_factor = 0.5
+# sink_integrator = "leapfrog_cosmo"
+# tstep_sink_factor = 1.0e-2                # lower number gives better integration of sink particle orbits
+# sink_dt_factor = 0.5                      # how many cells sink particle can traverse in a timestep
+# doNotAddParticleAccel = .false.
+# pt_maxSinksPerProc = 1000
+# sinksPresentAtRestart = .false.
+#
+#### From Jeremy's flash.par
+#max_gas_density = 1.67e-16
+#r_accretion = 4.5e16
+#sinkmerging = 0
+#isinks = .false.
+#grav_softening_type_gas = "linear"
+#grav_softening_type_sinks = "spline"
+#r_softening = 4.5e16
+#tstep_grav_factor = 0.5
+#sink_integrator = "leapfrog_cosmo"
+#tstep_sink_factor = 1.0e-2
+#sink_dt_factor = 0.5
+## should be false for direct n-body gas-sinks, 
+## sinks-sinks, and sinks-gas gravity
+#doNotAddParticleAccel = .false.
+#pt_maxSinksPerProc = 1000
+## if restarting, are there sinks already in sim?
+#sinksPresentAtRestart = .false.
+
+
+#  Done.
+
+
+
