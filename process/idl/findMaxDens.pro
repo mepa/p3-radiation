@@ -1,22 +1,10 @@
 pro findMaxDens
 
 ; File Options
-directory = "/data1/r900-4/mepa/Radiation/Work/cosmoDMonly_256/"
-file      = "cosmoDMonly_256_hdf5_chk_"
-;num       = 0018
-;sstart    = 206 ;?
-;send      = 235 ;?
-;step      = 1
-;box_size  = 13.5769814D24 ;3.08D24
+directory = "/scratch/01707/mepa/Rad_res512/"
+file      = "rad_hdf5_chk_"
 
-;bhmass    = 1.35D34
-
-; Output Options
-;plotps = 0
-;plotgif = 1
-;charsize = 1.4
-
-number = 89 
+number = 33
 
 ;if (sstart gt send and step gt 0) then send = ssta27
 ;for number = sstart,send,step do begin

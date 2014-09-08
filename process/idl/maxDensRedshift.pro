@@ -1,30 +1,23 @@
 pro maxDensRedshift, sstart, send, step
 
 ; File Options
-;directory = "/ranger/scratch/01707/mepa/Final"
-;directory = "/ranger/scratch/01707/mepa/Fry"
-;directory = "/ranger/scratch/01707/mepa/Rad"
-;directory = "/ranger/scratch/01707/mepa/FryRad"
-directory = "/ranger/scratch/01707/mepa/FryRad062"
+;directory = "/work/01707/mepa/Rad"
+;directory = "/work/01707/mepa/Rad_1.0sigma8"
+;directory = "/work/01707/mepa/Rad_1.0sigma8/newChem"
+;directory = "/scratch/01707/mepa/Rad_1.0sigma8"
+directory = "/scratch/01707/mepa/Rad_res512"
 ;directory = "/data1/r900-3/mepa/SUBFIND/120725/Flash2Gadget_Shell_Script"
 ;directory = "/data1/r900-4/mepa/Radiation/Work/Fry"
-file      = "/final_hdf5_chk_"
+;file      = "/final_hdf5_chk_"
+file      = "/rad_hdf5_chk_"
 
-; Output Options
-plotps = 0
-plotgif = 1
-charsize = 1.4
-;if plotps eq 1 then begin
-;    device,xsize=16.0
-;    device,ysize=12.0
-;end
+pi = 3.1415927e0
+grav_const = 6.6726e-8
 
-;if plotgif eq 1 then begin
-;   window, 10, xsize=800,ysize=600
-;end
-
-;!P.Multi = [0,2,2,0,0]
-;loadct,39
+hubble_const = 2.27502706e-18 ; 70.2 km/s/Mpc
+omega_m = 0.275e0
+omega_v = 0.725e0
+omega_b = 0.0458
 
 pfname = 'maxDens_' + String(strcompress(sstart, /remove)) + '_' + String(strcompress(send, /remove)) + '_' + String(strcompress(step, /remove)) + '.txt'
 openw,lun,pfname,/get_lun
@@ -33,6 +26,7 @@ outfile = 'maxdens_' + String(strcompress(sstart, /remove)) + '_' + String(strco
 
 num_pts = floor((send-sstart)/step)+1
 maxdensities = dblarr(num_pts) 
+mean_baryon_densities = dblarr(num_pts) 
 redshifts = dblarr(num_pts) 
 
 count = 0L
@@ -119,17 +113,30 @@ for number = sstart,send,step do begin
         endif      
     endfor
 
-    max_dens_physical = max_value*(1.0 + redshift)^3.0
+    max_dens_physical = max_value * oneplusred^3.0
     maxdensities[count] = max_dens_physical
+
+    hubble_param_sq = hubble_const^2.0 * (omega_m *oneplusred^3.0 + omega_v)
+    
+    rho_crit = 3.0 * hubble_param_sq / (8.0 * pi * grav_const) / oneplusred^3.0
+    rho_background = rho_crit * omega_m
+
+    rho_crit_approx = 3.0 * hubble_const^2.0 / (8.0 * pi * grav_const)
+    rho_background_approx = rho_crit_approx * omega_b
+    mean_baryon_densities[count] = rho_background_approx * oneplusred^3.0
     
     print, "max density value and location"
     print, max_value, max_x, max_y, max_z
-    print, "redshift
+    print, "redshift"
     print, redshift
     print, "physical max density"
     print, max_dens_physical
+    print, "mean baryon density"
+    print, mean_baryon_densities[count]
+    print, "background density"
+    print, rho_background
 
-    printf, lun, FORMAT='(I,F,E)', number, redshift, max_dens_physical
+    printf, lun, FORMAT='(I,F,E,E,E)', number, redshift, max_dens_physical, max_x, max_y, max_z
 
     count = count + 1
 endfor
@@ -137,14 +144,16 @@ endfor
 close, lun
 free_lun, lun
 
-xr = [1e-4, 1e4]
-yr = [1e0, 1e5]
+;xr = [1e-4, 1e4]
+yr = [1e-3, 1e4]
 
 ;plot, redshifts, maxdensities, /xlog, /ylog, background='FFFFFF'xl, color=0, psym=3, xrange = xr, yrange=yr, xstyle=1, ystyle=1
 
-plot, redshifts, maxdensities, /ylog, background='FFFFFF'xl, color=0, psym=-3, linestyle=0, xtitle='redshift', ytitle='phys max dens (g cm^-3)'
+;plot, redshifts, maxdensities, /ylog, background='FFFFFF'xl, color=0, psym=-3, linestyle=0, xtitle='redshift', ytitle='phys max dens (g cm^-3)'
 
-plot, redshifts, maxdensities/1.67e-24, /ylog, background='FFFFFF'xl, color=0, psym=-3, linestyle=0, xtitle='redshift', ytitle='phys max num dens (cm^-3)'
+plot, redshifts, maxdensities/1.67e-24, /ylog, background='FFFFFF'xl, color=0, psym=-3, yrange = yr, linestyle=0, xtitle='redshift', ytitle='phys max num dens (cm^-3)'
+
+oplot, redshifts, mean_baryon_densities/1.67e-24, color=1
     
 void = cgSnapshot(FILENAME=outfile, /NoDialog)
 

@@ -1,34 +1,13 @@
 pro gasMassRedshiftContours, sstart, send, step
 
 ; File Options
-;directory = "/ranger/scratch/01707/mepa/Fry"
-;directory = "/ranger/scratch/01707/mepa/Rad"
-
-directory = "/ranger/scratch/01707/mepa/FryRad062"
-
+directory = "/scratch/01707/mepa/Rad_1.0sigma8"
 ;directory = "/data1/r900-3/mepa/SUBFIND/120725/Flash2Gadget_Shell_Script"
 ;directory = "/data1/r900-4/mepa/Radiation/Work/Fry"
 ;directory = "/data1/r900-3/mepa/Work/FryRad062"
 ;file      = "/final_hdf5_chk_"
 
-directory = "/ranger/work/01707/mepa/Rad"
 file      = "/rad_hdf5_chk_"
-
-; Output Options
-plotps = 0
-plotgif = 1
-charsize = 1.4
-;if plotps eq 1 then begin
-;    device,xsize=16.0
-;    device,ysize=12.0
-;end
-
-;if plotgif eq 1 then begin
-;   window, 10, xsize=800,ysize=600
-;end
-
-;!P.Multi = [0,2,2,0,0]
-;loadct,39
 
 linecolors
 
@@ -242,7 +221,7 @@ yr = [1.0D0, 1.0D10]
 
 plot, redshifts, gas_10neg2, psym=-3, /ylog, background='FFFFFF'xl, color=1, linestyle=0, yrange=yr, ystyle=1, xtitle='redshift', ytitle='total gas mass in a 2 Mpc comoving box (Msun)'
 ;plot, redshifts, h_gas, psym=-3, /ylog, background='FFFFFF'xl, color=0, linestyle=0, xtitle='redshift', ytitle='total gas mass in H, H+, H2, H(>10^{-4}) [Msun]'
-;oplot, redshifts, gas_10neg2, psym=-3, color=1, linestyle=1
+oplot, redshifts, gas_10neg2, psym=-3, color=1, linestyle=1
 oplot, redshifts, gas_10neg1, psym=-3, color=2, linestyle=1
 oplot, redshifts, gas_10zero, psym=-3, color=3, linestyle=2
 oplot, redshifts, gas_10pos1, psym=-3, color=4, linestyle=3

@@ -3,10 +3,8 @@ pro make200, sstart, send, step
 ; File Options
 ;directory = "/ranger/scratch/01468/grapenut/current"
 ;file      = "/1star_hdf5_chk_"
-;directory = "/ranger/scratch/01707/mepa/Fry"
-;file      = "/final_hdf5_chk_"
-directory = "/scratch/cerberus/d4/mepa/stampede/Rad"
-file      = "/rad_hdf5_chk_"
+directory = "/ranger/scratch/01707/mepa/Fry"
+file      = "/final_hdf5_chk_"
 
 
 ;sstart    = 90

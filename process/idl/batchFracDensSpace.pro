@@ -1,14 +1,11 @@
  pro batchFracDensSpace, sstart, send, step
 
 ; File Options
-;directory = "/ranger/scratch/01707/mepa/Final"
-;directory = "/ranger/scratch/01707/mepa/Fry"
-;directory = "/ranger/scratch/01707/mepa/Rad"
-
-;directory = "/ranger/work/01707/mepa/Rad"
-;file      = "/rad_hdf5_chk_"
-
-directory = "/scratch/cerberus/d4/mepa/ranger/Rad"
+;directory = "/work/01707/mepa/Rad"
+;directory = "/work/01707/mepa/Rad_1.0sigma8"
+;directory = "/work/01707/mepa/Rad_1.0sigma8/newChem"
+;directory = "/scratch/01707/mepa/Rad_1.0sigma8"
+directory = "/scratch/01707/mepa/Rad_res512"
 file      = "/rad_hdf5_chk_"
 
 ;directory = "/data1/r900-3/mepa/SUBFIND/120725/Flash2Gadget_Shell_Script"
@@ -81,13 +78,11 @@ for number = sstart,send,step do begin
 
 
     ;;; HYDROGEN FRACTION ;;;
-    ;xr = [1e-4, 1e4]
-   ;;yr = [0.5e-5, 1]
-
     xr = [1e-4, 1e4]
-    yr = [1e-1, 1]
+    yr = [0.5e-5, 1]
+    ;yr = [0.755, 0.76]
 
-    plot, numdens, hfrac, /xlog, /ylog, background='FFFFFF'xl, color=0, psym=3, xrange = xr, yrange=yr, xstyle=1, ystyle=1
+    plot, numdens, hfrac, /xlog, /ylog, background='FFFFFF'xl, color=0, psym=3, xrange = xr, yrange=yr, xstyle=1, ystyle=1, xtitle='number density (cm^-3)', ytitle='H abundance'
 
     ;plot, numdens, hfrac, /xlog, /ylog, background='FFFFFF'xl, color=0, psym=3, xrange = xr,  xstyle=1, ystyle=1
 
@@ -95,13 +90,12 @@ for number = sstart,send,step do begin
 
 
     ;;; HPLUS FRACTION ;;;
-    ;xr = [1e-4, 1e4]
-    ;yr = [1e-5, 1]
-
+    
     xr = [1e-4, 1e4]
-    yr = [1e-4, 1e-3]
+    yr = [1e-6, 1]
+    ;yr = [1e-5, 1e-3]
 
-    plot, numdens, hplufrac, /xlog, /ylog, background='FFFFFF'xl, color=0, psym=3, xrange = xr, yrange=yr, xstyle=1, ystyle=1
+    plot, numdens, hplufrac, /xlog, /ylog, background='FFFFFF'xl, color=0, psym=3, xrange = xr, yrange=yr, xstyle=1, ystyle=1, xtitle='number density (cm^-3)', ytitle='Hplus abundance'
 
     ;plot, numdens, hplufrac, /xlog, /ylog, background='FFFFFF'xl, color=0, psym=3, xrange = xr,  xstyle=1, ystyle=1
 
@@ -109,14 +103,13 @@ for number = sstart,send,step do begin
 
 
     ;;; HTWO FRACTION ;;;
-    ;xr = [1e-4, 1e4]
-    ;;yr = [1e-14, 1e-2] ; used for Fry
-    ;yr = [1e-18, 1e-1] ; used for Rad
 
     xr = [1e-4, 1e4]
-    yr = [1e-6, 1e-5]
+    ;yr = [1e-14, 1e-2] ; used for Fry
+    yr = [1e-18, 1e-1] ; used for RadTrans
+    ;yr = [1e-6, 1e-3] ; used for Rad
 
-    plot, numdens, htwofrac, /xlog, /ylog, background='FFFFFF'xl, color=0, psym=3, xrange = xr, yrange=yr, xstyle=1, ystyle=1
+    plot, numdens, htwofrac, /xlog, /ylog, background='FFFFFF'xl, color=0, psym=3, xrange = xr, yrange=yr, xstyle=1, ystyle=1, xtitle='number density (cm^-3)', ytitle='Htwo abundance'
 
     ;plot, numdens, htwofrac, /xlog, /ylog, background='FFFFFF'xl, color=0, psym=3, xrange = xr,  xstyle=1, ystyle=1
 
