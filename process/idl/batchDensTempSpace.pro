@@ -7,8 +7,9 @@
 ;directory = "/work/01707/mepa/Rad_1.0sigma8/newChem"
 ;directory = "/scratch/01707/mepa/zInitial_74.2/eintSwitch_1.0"
 ;directory = "/scratch/01707/mepa/Rad_1.0sigma8"
-directory = "/scratch/01707/mepa/Rad_res512"
-file      = "/rad_hdf5_chk_"
+;directory = "/scratch/01707/mepa/Rad_res512"
+directory = "/scratch/01707/mepa/Rad_1Mpc/RadCosmo_res128"
+file      = "/radCosmoLW_hdf5_chk_"
 ;file      = "/final_hdf5_chk_"
 ;num       = 0022
 ;num       = 0007
@@ -16,7 +17,7 @@ file      = "/rad_hdf5_chk_"
 ;send      = 10
 ;step      = 1
 ;box_size  = 5.0*3.08e24
-box_size  = 2.0*3.08e24
+box_size  = 1.0*3.08e24
 print, file
 
 centerx = box_size / 2.0
@@ -80,7 +81,7 @@ for number = sstart,send,step do begin
     oneplusred = 1.0 + redshift
     
     print, "redshift = ", redshift
-    outfile = 'phase_' + String(strcompress(number, /remove)) + '_z' + String(strcompress(redshift, /remove)) + '.png'    
+    outfile = 'plots/phase_' + String(strcompress(number, /remove)) + '_z' + String(strcompress(redshift, /remove)) + '.png'    
 
     print, "reading density..."
     dens =  loaddata_nomerge(filename,'dens', XCOORDS=x, YCOORDS=y, ZCOORDS=z)
@@ -170,33 +171,33 @@ for number = sstart,send,step do begin
 
     plot, numdens, temperature, /xlog, /ylog, background='FFFFFF'xl, color=0, psym=3, xrange = xr, yrange=yr, xstyle=1, ystyle=1, xtitle='number density (cm^-3)', ytitle='temperature (K)'
     
-    ; line of adiabatic collapse
-    n1 = findgen(100)
-    ;n1 = n1/100
-    ;n1 = n1/2
-    ;oplot, n1, 10.0 * (n1/0.1)^(2.0/3.0), color=0
-    ;oplot, n1/2000, 10.0 * (n1*100)^(2.0/3.0), color=0
-    oplot, n1/1000, 10.0 * (n1/10)^(2.0/3.0), color=0
+    ;; line of adiabatic collapse
+    ;n1 = findgen(100)
+    ;;n1 = n1/100
+    ;;n1 = n1/2
+    ;;oplot, n1, 10.0 * (n1/0.1)^(2.0/3.0), color=0
+    ;;oplot, n1/2000, 10.0 * (n1*100)^(2.0/3.0), color=0
+    ;oplot, n1/1000, 10.0 * (n1/10)^(2.0/3.0), color=0
 
-    ; Jeans floor    
-    n2 = findgen(50)
-    oplot, n2*10, n2*10, color=2  
-    ;oplot, n2*2000, n2*2, color=2 
+    ;; Jeans floor    
+    ;n2 = findgen(50)
+    ;oplot, n2*10, n2*10, color=2  
+    ;;oplot, n2*2000, n2*2, color=2 
  
     ; virial temperature
     mu = 1.2
-    n3 = findgen(100)
-    T3 = identity(100)
-    ;Mvir = 4.0e11 * exp(-0.5 * redshift) ; 1.4*sigma8 run
+    ;n3 = findgen(100)
+    ;T3 = identity(100)
+    ;;Mvir = 4.0e11 * exp(-0.5 * redshift) ; 1.4*sigma8 run
     Mvir = 1.0e10 * exp(-0.5 * redshift) ; 1.0*sigma8 run **CHECK**
     Tvir = 2.0e4 * (mu / 1.2) * (Mvir / 1.0e8)^(2.0/3.0) * (1.0 + redshift) / 10.0
-    oplot, xr, [Tvir, Tvir], color=3
+    ;oplot, xr, [Tvir, Tvir], color=3
 
     print, Mvir, Tvir
 
     ; CMB temperature
-    Tcmb = 2.2725 * oneplusred
-    oplot, xr, [Tcmb, Tcmb], color=4
+    ;Tcmb = 2.2725 * oneplusred
+    ;oplot, xr, [Tcmb, Tcmb], color=4
 
     ;mytemp = fltarr(100)
 
