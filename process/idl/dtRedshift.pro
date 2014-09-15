@@ -1,11 +1,13 @@
 pro dtRedshift, sstart, send, step
 
 ;directory = "/scratch/01707/mepa/Rad_1.0sigma8"
-directory = "/scratch/01707/mepa/Rad_res512"
+;directory = "/scratch/01707/mepa/Rad_res512"
 
-file      = "/rad_hdf5_chk_"
+directory = "/scratch/01707/mepa/Rad_1Mpc/RadCosmo_res128"
 
-outfile = 'timestep_' + String(strcompress(sstart, /remove)) + '_' + String(strcompress(send, /remove)) + '_' + String(strcompress(step, /remove)) + '.png'
+file      = "/radCosmoLW_hdf5_chk_"
+
+outfile = 'plots/timestep_' + String(strcompress(sstart, /remove)) + '_' + String(strcompress(send, /remove)) + '_' + String(strcompress(step, /remove)) + '.png'
 
 yr = 3.1536e7
 Myr = 1.0e6 * yr
