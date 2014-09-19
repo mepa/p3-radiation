@@ -79,7 +79,7 @@ zr_boundary_type               =  "periodic"
 
 ### Grid paramesh parameters ###
 nrefs			       = 1  # [2] (?? not in ctss)
-lrefine_max                    = 24 # [1]
+lrefine_max                    = 18 # [1]
 lrefine_min                    = 5  # [1]
 
 refine_on_particle_count       = .false. # [false]
