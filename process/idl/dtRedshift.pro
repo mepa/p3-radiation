@@ -1,10 +1,6 @@
 pro dtRedshift, sstart, send, step
 
-;directory = "/scratch/01707/mepa/Rad_1.0sigma8"
-;directory = "/scratch/01707/mepa/Rad_res512"
-
 directory = "/scratch/01707/mepa/Rad_1Mpc/RadCosmo_res128"
-
 file      = "/radCosmoLW_hdf5_chk_"
 
 outfile = 'plots/timestep_' + String(strcompress(sstart, /remove)) + '_' + String(strcompress(send, /remove)) + '_' + String(strcompress(step, /remove)) + '.png'

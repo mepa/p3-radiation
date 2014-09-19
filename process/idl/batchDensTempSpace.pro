@@ -1,22 +1,9 @@
  pro batchDensTempSpace, sstart, send, step
 
 ; File Options
-;directory = "/work/01707/mepa/Rad"
-;directory = "/work/01707/mepa/Rad_1.0sigma8"
-;directory = "/work/01707/mepa/Rad_1.0sigma8/zInitial_149.4"
-;directory = "/work/01707/mepa/Rad_1.0sigma8/newChem"
-;directory = "/scratch/01707/mepa/zInitial_74.2/eintSwitch_1.0"
-;directory = "/scratch/01707/mepa/Rad_1.0sigma8"
-;directory = "/scratch/01707/mepa/Rad_res512"
 directory = "/scratch/01707/mepa/Rad_1Mpc/RadCosmo_res128"
 file      = "/radCosmoLW_hdf5_chk_"
-;file      = "/final_hdf5_chk_"
-;num       = 0022
-;num       = 0007
-;sstart    = 1
-;send      = 10
-;step      = 1
-;box_size  = 5.0*3.08e24
+
 box_size  = 1.0*3.08e24
 print, file
 
@@ -24,8 +11,8 @@ centerx = box_size / 2.0
 centery = centerx
 centerz = centerx
 
-;radius = 0.5*3.08e24
-radius = 3.08e24
+radius = 0.5*3.08e24
+;radius = 3.08e24
 
 xmin = centerx - radius
 xmax = centerx + radius
@@ -34,28 +21,11 @@ ymax = centery + radius
 zmin = centerz - radius
 zmax = centerz + radius
 
-;bhmass    = 1.35D34
-
 ; Output Options
 plotps = 0
 plotgif = 1
 charsize = 1.4
-;if plotps eq 1 then begin
-;    device,xsize=16.0
-;    device,ysize=12.0
-;end
 
-;if plotgif eq 1 then begin
- ;   window, 10, xsize=800,ysize=600
-;end
-
-;!P.Multi = [0,2,2,0,0]
-;loadct,39
-
-
-
-;number = 42
-;if (sstart gt send and step gt 0) then send = sstart
 for number = sstart,send,step do begin
 
     if (number ge 1)   then prefix = '000'
@@ -65,8 +35,7 @@ for number = sstart,send,step do begin
 
     filename = directory + file + prefix + String(strcompress(number,/remove))
     print, filename
-    ;outfile = 'phase_' + String(strcompress(number, /remove)) + '.png'
-    ;outfile = 'phase.png'
+
     ;;;;;
     ; get redshift of file
     file_identifier = H5F_OPEN(filename)
@@ -81,7 +50,7 @@ for number = sstart,send,step do begin
     oneplusred = 1.0 + redshift
     
     print, "redshift = ", redshift
-    outfile = 'plots/phase_' + String(strcompress(number, /remove)) + '_z' + String(strcompress(redshift, /remove)) + '.png'    
+    outfile = 'plots/phase/phase_' + String(strcompress(number, /remove)) + '_z' + String(strcompress(redshift, /remove)) + '.png'    
 
     print, "reading density..."
     dens =  loaddata_nomerge(filename,'dens', XCOORDS=x, YCOORDS=y, ZCOORDS=z)
@@ -95,7 +64,6 @@ for number = sstart,send,step do begin
     ;y = load_coords(filename, 'dens', 2)
     ;print, "reading z..."
     ;z = load_coords(filename, 'dens', 3)
-    
     
     ;list = where((x gt xmin) and (x lt xmax) and (y gt ymin) and (y lt ymax) and (z gt zmin) and (z lt zmax))
     
@@ -140,15 +108,6 @@ for number = sstart,send,step do begin
     ;;x = x / oneplusred
     ;y = y / oneplusred
     ;z = z / oneplusred
-   
-
-    ; Let's find out what the enclosed mass radially around a given 
-    ; point it. Note: does not include mass on other side of grid
-    ; given periodic BCs
-
-    
-  
- 
    
     temperature = temperature/oneplusred^2.0
 

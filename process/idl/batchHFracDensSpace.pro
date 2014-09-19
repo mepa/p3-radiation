@@ -1,33 +1,14 @@
  pro batchHFracDensSpace, sstart, send, step
 
 ; File Options
-;directory = "/ranger/scratch/01707/mepa/Final"
-;directory = "/ranger/scratch/01707/mepa/Fry"
-;directory = "/ranger/scratch/01707/mepa/Rad"
-
-directory = "/ranger/work/01707/mepa/Rad"
-file      = "/rad_hdf5_chk_"
-
-;directory = "/data1/r900-3/mepa/SUBFIND/120725/Flash2Gadget_Shell_Script"
-;file      = "/final_hdf5_chk_"
-
+directory = "/scratch/01707/mepa/Rad_1Mpc/RadCosmo_res128/"
+file      = "/radCosmoLW_hdf5_chk_"
 print, file
 
 ; Output Options
 plotps = 0
 plotgif = 1
 charsize = 1.4
-;if plotps eq 1 then begin
-;    device,xsize=16.0
-;    device,ysize=12.0
-;end
-
-;if plotgif eq 1 then begin
- ;   window, 10, xsize=800,ysize=600
-;end
-
-;!P.Multi = [0,2,2,0,0]
-;loadct,39
 
 for number = sstart,send,step do begin
 
@@ -53,7 +34,7 @@ for number = sstart,send,step do begin
     oneplusred = 1.0 + redshift
     
     print, "redshift = ", redshift
-    outfile = 'h_' + String(strcompress(number, /remove)) + '_z' + String(strcompress(redshift, /remove)) + '.png'    
+    outfile = 'plots/H/h_' + String(strcompress(number, /remove)) + '_z' + String(strcompress(redshift, /remove)) + '.png'    
 
     print, "reading density..."
     dens = loaddata_nomerge(filename,'dens')
@@ -71,7 +52,8 @@ for number = sstart,send,step do begin
 
     print, hfrac(10)
     xr = [1e-4, 1e4]
-    yr = [0.5e-5, 1]
+    ;yr = [0.5e-5, 1] ;use for UV rad?
+    yr = [0.5, 1] ;use for LW rad
 
     plot, numdens, hfrac, /xlog, /ylog, background='FFFFFF'xl, color=0, psym=3, xrange = xr, yrange=yr, xstyle=1, ystyle=1
 

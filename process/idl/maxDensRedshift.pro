@@ -1,15 +1,8 @@
 pro maxDensRedshift, sstart, send, step
 
 ; File Options
-;directory = "/work/01707/mepa/Rad"
-;directory = "/work/01707/mepa/Rad_1.0sigma8"
-;directory = "/work/01707/mepa/Rad_1.0sigma8/newChem"
-;directory = "/scratch/01707/mepa/Rad_1.0sigma8"
-directory = "/scratch/01707/mepa/Rad_res512"
-;directory = "/data1/r900-3/mepa/SUBFIND/120725/Flash2Gadget_Shell_Script"
-;directory = "/data1/r900-4/mepa/Radiation/Work/Fry"
-;file      = "/final_hdf5_chk_"
-file      = "/rad_hdf5_chk_"
+directory = "/scratch/01707/mepa/Rad_1Mpc/RadCosmo_res128"
+file      = "/radCosmoLW_hdf5_chk_"
 
 pi = 3.1415927e0
 grav_const = 6.6726e-8
@@ -19,10 +12,10 @@ omega_m = 0.275e0
 omega_v = 0.725e0
 omega_b = 0.0458
 
-pfname = 'maxDens_' + String(strcompress(sstart, /remove)) + '_' + String(strcompress(send, /remove)) + '_' + String(strcompress(step, /remove)) + '.txt'
+pfname = 'plots/maxDens_' + String(strcompress(sstart, /remove)) + '_' + String(strcompress(send, /remove)) + '_' + String(strcompress(step, /remove)) + '.txt'
 openw,lun,pfname,/get_lun
 
-outfile = 'maxdens_' + String(strcompress(sstart, /remove)) + '_' + String(strcompress(send, /remove)) + '_' + String(strcompress(step, /remove)) + '.png'
+outfile = 'plots/maxdens_' + String(strcompress(sstart, /remove)) + '_' + String(strcompress(send, /remove)) + '_' + String(strcompress(step, /remove)) + '.png'
 
 num_pts = floor((send-sstart)/step)+1
 maxdensities = dblarr(num_pts) 
