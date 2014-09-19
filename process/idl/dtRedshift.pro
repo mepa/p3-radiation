@@ -1,6 +1,6 @@
 pro dtRedshift, sstart, send, step
 
-directory = "/scratch/01707/mepa/Rad_1Mpc/RadCosmo_res128"
+directory = "/scratch/01707/mepa/Rad_1Mpc/RadCosmoLW_res128"
 file      = "/radCosmoLW_hdf5_chk_"
 
 outfile = 'plots/timestep_' + String(strcompress(sstart, /remove)) + '_' + String(strcompress(send, /remove)) + '_' + String(strcompress(step, /remove)) + '.png'
@@ -52,7 +52,7 @@ for number = sstart,send,step do begin
    
 endfor
 
-plot, redshifts, timesteps/Myr, /ylog, background='FFFFFF'xl, color=0, psym=-3, linestyle=0, xtitle='redshift', ytitle='timestep (Myr)'
+plot, redshifts, timesteps/Myr, /ylog, background='FFFFFF'xl, color=0, psym=-3, linestyle=0, yrange=[0.05,5.0],xtitle='redshift', ytitle='timestep (Myr)'
 
 ;plot, redshifts, times/Myr, /ylog, background='FFFFFF'xl, color=0, psym=-3, linestyle=0, xtitle='redshift', ytitle='age of universe (Myr)'
 

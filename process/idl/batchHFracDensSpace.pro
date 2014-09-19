@@ -1,7 +1,7 @@
  pro batchHFracDensSpace, sstart, send, step
 
 ; File Options
-directory = "/scratch/01707/mepa/Rad_1Mpc/RadCosmo_res128/"
+directory = "/scratch/01707/mepa/Rad_1Mpc/RadCosmoLW_res128/"
 file      = "/radCosmoLW_hdf5_chk_"
 print, file
 
