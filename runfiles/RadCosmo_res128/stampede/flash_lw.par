@@ -8,11 +8,11 @@ basenm                         =  "radCosmoLW_"
 log_file                       =  "radCosmoLW.log"
 #restart                        =  .false.
 restart                        =  .true.
-checkpointFileNumber           = 103
+checkpointFileNumber           = 130
 #plotFileNumber                 = 138
 
 zInitial			=  145.51
-zFinal                         =  12.5
+zFinal                         =  18.2 #12.5
 tmax                           =  1.E99
 
 wall_clock_checkpoint          =  3500000.   # [43200]
@@ -159,6 +159,7 @@ jeans_floor_ref		       = 21      # [24]
 #-----------------------------------------------------------------------------
 	
 useColumnDensity = .true.
+num_skip_steps   = 5
 
 #-----------------------------------------------------------------------------
 # Photoionization Module
