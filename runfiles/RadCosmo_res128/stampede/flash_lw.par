@@ -8,11 +8,11 @@ basenm                         =  "radCosmoLW_"
 log_file                       =  "radCosmoLW.log"
 #restart                        =  .false.
 restart                        =  .true.
-checkpointFileNumber           = 130
+checkpointFileNumber           = 133
 #plotFileNumber                 = 138
 
 zInitial			=  145.51
-zFinal                         =  18.2 #12.5
+zFinal                         =  15.0 #12.5
 tmax                           =  1.E99
 
 wall_clock_checkpoint          =  3500000.   # [43200]
