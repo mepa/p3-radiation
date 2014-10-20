@@ -34,7 +34,7 @@ for number = sstart,send,step do begin
     oneplusred = 1.0 + redshift
     
     print, "redshift = ", redshift
-    outfile = 'plots/HPLU/hplu_' + String(strcompress(number, /remove)) + '_z' + String(strcompress(redshift, /remove)) + '.png'    
+    outfile = 'plots/hplu/hplu_' + String(strcompress(number, /remove)) + '_z' + String(strcompress(redshift, /remove)) + '.png'    
 
     print, "reading density..."
     dens = loaddata_nomerge(filename,'dens')
@@ -53,9 +53,9 @@ for number = sstart,send,step do begin
     print, hplufrac(10)
     xr = [1e-4, 1e4]
     ;yr = [1e-5, 1] ;with UV rad?
-    yr = [1e-5, 1e-3] ;with LW rad
+    yr = [1e-5, 1e-2] ;with LW rad
 
-    plot, numdens, hplufrac, /xlog, /ylog, background='FFFFFF'xl, color=0, psym=3, xrange = xr, yrange=yr, xstyle=1, ystyle=1
+    plot, numdens, hplufrac, /xlog, /ylog, background='FFFFFF'xl, color=0, psym=3, xrange = xr, yrange=yr, xstyle=1, ystyle=1, xtitle='physical number density (cm^-3)', ytitle='ionized hydrogen fraction'
 
     ;plot, numdens, hplufrac, /xlog, /ylog, background='FFFFFF'xl, color=0, psym=3, xrange = xr,  xstyle=1, ystyle=1
 

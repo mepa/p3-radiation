@@ -7,6 +7,7 @@ outfile = 'plots/timestep_' + String(strcompress(sstart, /remove)) + '_' + Strin
 
 yr = 3.1536e7
 Myr = 1.0e6 * yr
+kyr = 1.0e3 * yr
 
 num_pts = floor((send-sstart)/step)+1
 print, "num_pts:", num_pts
@@ -25,6 +26,7 @@ for number = sstart,send,step do begin
    filename = directory + file + prefix + String(strcompress(number,/remove))
    print, filename
    
+   if (number eq 228) then continue ;TACC lost this file
    ;;;;;
    ; get redshift, time and dt of file
    file_identifier = H5F_OPEN(filename)
@@ -42,17 +44,20 @@ for number = sstart,send,step do begin
    print, "redshift = ", redshift
    redshifts[count] = redshift
    
-   print, "time = ", time, "sec (", time/Myr, "Myr)"
+   print, "time = ", time, "sec (", time/kyr, "kyr)"
    times[count] = time
    
-   print, "timestep = ", dt, "sec (", dt/Myr, "Myr)"
+   print, "timestep = ", dt, "sec (", dt/kyr, "kyr)"
    timesteps[count] = dt
 
    count = count + 1
    
 endfor
 
-plot, redshifts, timesteps/Myr, /ylog, background='FFFFFF'xl, color=0, psym=-3, linestyle=0, yrange=[0.05,5.0],xtitle='redshift', ytitle='timestep (Myr)'
+xr = [10, 25]
+yr = [5, 2000]
+
+plot, redshifts, timesteps/kyr, /ylog, background='FFFFFF'xl, color=0, psym=-3, linestyle=0, xrange=xr, yrange=yr, xtitle='redshift', ytitle='timestep (kyr)'
 
 ;plot, redshifts, times/Myr, /ylog, background='FFFFFF'xl, color=0, psym=-3, linestyle=0, xtitle='redshift', ytitle='age of universe (Myr)'
 

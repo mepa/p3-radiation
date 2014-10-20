@@ -1,7 +1,7 @@
 pro maxDensRedshift, sstart, send, step
 
 ; File Options
-directory = "/scratch/01707/mepa/Rad_1Mpc/RadCosmo_res128"
+directory = "/scratch/01707/mepa/Rad_1Mpc/RadCosmoLW_res128"
 file      = "/radCosmoLW_hdf5_chk_"
 
 pi = 3.1415927e0
@@ -32,7 +32,9 @@ for number = sstart,send,step do begin
     
     filename = directory + file + prefix + String(strcompress(number,/remove))
     print, filename
-    
+
+    if (number eq 228) then continue ;TACC lost this file
+
     ;;;;;
     ; get redshift of file
     file_identifier = H5F_OPEN(filename)

@@ -34,7 +34,7 @@ for number = sstart,send,step do begin
     oneplusred = 1.0 + redshift
     
     print, "redshift = ", redshift
-    outfile = 'plots/HTWO/htwo_' + String(strcompress(number, /remove)) + '_z' + String(strcompress(redshift, /remove)) + '.png'    
+    outfile = 'plots/htwo/htwo_' + String(strcompress(number, /remove)) + '_z' + String(strcompress(redshift, /remove)) + '.png'    
 
     print, "reading density..."
     dens = loaddata_nomerge(filename,'dens')
@@ -56,7 +56,7 @@ for number = sstart,send,step do begin
     ;yr = [1e-18, 1e-1] ; used for Rad
     yr = [1e-15, 1e-5] ; use for LW
 
-    plot, numdens, htwofrac, /xlog, /ylog, background='FFFFFF'xl, color=0, psym=3, xrange = xr, yrange=yr, xstyle=1, ystyle=1
+    plot, numdens, htwofrac, /xlog, /ylog, background='FFFFFF'xl, color=0, psym=3, xrange = xr, yrange=yr, xstyle=1, ystyle=1, xtitle='physical number density (cm^-3)', ytitle='molecular hydrogen fraction'
 
     ;plot, numdens, htwofrac, /xlog, /ylog, background='FFFFFF'xl, color=0, psym=3, xrange = xr,  xstyle=1, ystyle=1
 

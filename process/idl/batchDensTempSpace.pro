@@ -128,7 +128,7 @@ for number = sstart,send,step do begin
     ;xr = [1e-2, 1e2]
     ;yr = [1e2, 1e3]
 
-    plot, numdens, temperature, /xlog, /ylog, background='FFFFFF'xl, color=0, psym=3, xrange = xr, yrange=yr, xstyle=1, ystyle=1, xtitle='number density (cm^-3)', ytitle='temperature (K)'
+    plot, numdens, temperature, /xlog, /ylog, background='FFFFFF'xl, color=0, psym=3, xrange = xr, yrange=yr, xstyle=1, ystyle=1, xtitle='physical number density (cm^-3)', ytitle='temperature (K)'
     
     ;; line of adiabatic collapse
     ;n1 = findgen(100)
