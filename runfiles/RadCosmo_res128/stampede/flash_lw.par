@@ -8,7 +8,7 @@ basenm                         =  "radCosmoLW_"
 log_file                       =  "radCosmoLW.log"
 #restart                        =  .false.
 restart                        =  .true.
-checkpointFileNumber           = 319
+checkpointFileNumber           = 359
 #plotFileNumber                 = 138
 
 zInitial			=  145.51
@@ -20,7 +20,7 @@ nend                           =  10000	     # [100]
 
 checkpointFileIntervalZ        =  1000.      # [HUGE(1.)]
 checkpointFileIntervalTime     =  9.0e16     # [1.]
-checkpointFileIntervalStep     =  10
+checkpointFileIntervalStep     =  15
 
 plotFileIntervalZ              =  1000.0
 plotFileIntervalTime           =  1.0e99
