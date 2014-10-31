@@ -131,7 +131,7 @@ for number = sstart,send,step do begin
     print, "background density"
     print, rho_background
 
-    printf, lun, FORMAT='(I,F,E,E,E)', number, redshift, max_dens_physical, max_x, max_y, max_z
+    printf, lun, FORMAT='(I,F,E,E,E,E)', number, redshift, max_dens_physical, max_x, max_y, max_z
 
     count = count + 1
 endfor
@@ -140,13 +140,13 @@ close, lun
 free_lun, lun
 
 ;xr = [1e-4, 1e4]
-yr = [1e-3, 1e4]
+;yr = [1e-3, 1e5]
 
 ;plot, redshifts, maxdensities, /xlog, /ylog, background='FFFFFF'xl, color=0, psym=3, xrange = xr, yrange=yr, xstyle=1, ystyle=1
 
 ;plot, redshifts, maxdensities, /ylog, background='FFFFFF'xl, color=0, psym=-3, linestyle=0, xtitle='redshift', ytitle='phys max dens (g cm^-3)'
 
-plot, redshifts, maxdensities/1.67e-24, /ylog, background='FFFFFF'xl, color=0, psym=-3, yrange = yr, linestyle=0, xtitle='redshift', ytitle='phys max num dens (cm^-3)'
+plot, redshifts, maxdensities/1.67e-24, /ylog, background='FFFFFF'xl, color=0, psym=-3, linestyle=0, xtitle='redshift', ytitle='phys max num dens (cm^-3)'
 
 oplot, redshifts, mean_baryon_densities/1.67e-24, color=1
     

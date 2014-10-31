@@ -51,7 +51,7 @@ for number = sstart,send,step do begin
     numdens = dens/1.67e-24
 
     print, hplufrac(10)
-    xr = [1e-4, 1e4]
+    xr = [1e-5, 1e5]
     ;yr = [1e-5, 1] ;with UV rad?
     yr = [1e-5, 1e-2] ;with LW rad
 

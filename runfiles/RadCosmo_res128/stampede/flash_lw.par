@@ -8,7 +8,7 @@ basenm                         =  "radCosmoLW_"
 log_file                       =  "radCosmoLW.log"
 #restart                        =  .false.
 restart                        =  .true.
-checkpointFileNumber           = 359
+checkpointFileNumber           = 377
 #plotFileNumber                 = 138
 
 zInitial			=  145.51

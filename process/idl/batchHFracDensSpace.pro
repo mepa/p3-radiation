@@ -1,4 +1,4 @@
- pro batchHFracDensSpace, sstart, send, step
+pro batchHFracDensSpace, sstart, send, step
 
 ; File Options
 directory = "/scratch/01707/mepa/Rad_1Mpc/RadCosmoLW_res128/"
@@ -51,7 +51,7 @@ for number = sstart,send,step do begin
     numdens = dens/1.67e-24
 
     print, hfrac(10)
-    xr = [1e-4, 1e4]
+    xr = [1e-5, 1e5]
     ;yr = [0.5e-5, 1] ;use for UV rad?
     yr = [0.5, 1] ;use for LW rad
 

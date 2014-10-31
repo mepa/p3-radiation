@@ -54,10 +54,10 @@ for number = sstart,send,step do begin
    
 endfor
 
-xr = [10, 25]
+;xr = [10, 25]
 yr = [5, 2000]
 
-plot, redshifts, timesteps/kyr, /ylog, background='FFFFFF'xl, color=0, psym=-3, linestyle=0, xrange=xr, yrange=yr, xtitle='redshift', ytitle='timestep (kyr)'
+plot, redshifts, timesteps/kyr, /ylog, background='FFFFFF'xl, color=0, psym=-3, linestyle=0,  yrange=yr, xtitle='redshift', ytitle='timestep (kyr)'
 
 ;plot, redshifts, times/Myr, /ylog, background='FFFFFF'xl, color=0, psym=-3, linestyle=0, xtitle='redshift', ytitle='age of universe (Myr)'
 

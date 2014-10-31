@@ -51,7 +51,7 @@ for number = sstart,send,step do begin
     numdens = dens/1.67e-24
 
     print, htwofrac(10)
-    xr = [1e-4, 1e4]
+    xr = [1e-5, 1e5]
     ;yr = [1e-14, 1e-2] ; used for Fry
     ;yr = [1e-18, 1e-1] ; used for Rad
     yr = [1e-15, 1e-5] ; use for LW

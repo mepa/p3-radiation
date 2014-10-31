@@ -119,8 +119,8 @@ for number = sstart,send,step do begin
     ;xr = [1e-4, 1e4]
     ;yr = [1e0, 1e5]
 
-    xr = [1e-4, 1e5]
-    yr = [5e-1, 1e5]
+    xr = [1e-5, 1e5]
+    yr = [1e-1, 1e5]
 
     ;xr = [1e-4, 1e5]
     ;yr = [3e0, 5e6]
@@ -130,13 +130,13 @@ for number = sstart,send,step do begin
 
     plot, numdens, temperature, /xlog, /ylog, background='FFFFFF'xl, color=0, psym=3, xrange = xr, yrange=yr, xstyle=1, ystyle=1, xtitle='physical number density (cm^-3)', ytitle='temperature (K)'
     
-    ;; line of adiabatic collapse
-    ;n1 = findgen(100)
-    ;;n1 = n1/100
-    ;;n1 = n1/2
-    ;;oplot, n1, 10.0 * (n1/0.1)^(2.0/3.0), color=0
-    ;;oplot, n1/2000, 10.0 * (n1*100)^(2.0/3.0), color=0
-    ;oplot, n1/1000, 10.0 * (n1/10)^(2.0/3.0), color=0
+    ; line of adiabatic collapse
+    n1 = findgen(100)
+    ;n1 = n1/100
+    ;n1 = n1/2
+    ;oplot, n1, 10.0 * (n1/0.1)^(2.0/3.0), color=0
+    ;oplot, n1/2000, 10.0 * (n1*100)^(2.0/3.0), color=0
+    oplot, n1/1000, 10.0 * (n1/10)^(2.0/3.0), color=0
 
     ;; Jeans floor    
     ;n2 = findgen(50)
@@ -148,15 +148,16 @@ for number = sstart,send,step do begin
     ;n3 = findgen(100)
     ;T3 = identity(100)
     ;;Mvir = 4.0e11 * exp(-0.5 * redshift) ; 1.4*sigma8 run
-    Mvir = 1.0e10 * exp(-0.5 * redshift) ; 1.0*sigma8 run **CHECK**
+    ;Mvir = 1.0e10 * exp(-0.5 * redshift) ; 1.0*sigma8 run **CHECK**
+    Mvir = 6.0e10 * exp(-0.5 * redshift) ; 1 Mpc box (maybe not correct scaling)
     Tvir = 2.0e4 * (mu / 1.2) * (Mvir / 1.0e8)^(2.0/3.0) * (1.0 + redshift) / 10.0
-    ;oplot, xr, [Tvir, Tvir], color=3
+    oplot, xr, [Tvir, Tvir], color=3
 
     print, Mvir, Tvir
 
     ; CMB temperature
-    ;Tcmb = 2.2725 * oneplusred
-    ;oplot, xr, [Tcmb, Tcmb], color=4
+    Tcmb = 2.2725 * oneplusred
+    oplot, xr, [Tcmb, Tcmb], color=4
 
     ;mytemp = fltarr(100)
 
