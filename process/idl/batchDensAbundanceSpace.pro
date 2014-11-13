@@ -1,4 +1,4 @@
-pro batchHFracDensSpace, sstart, send, step
+pro batchDensAbundanceSpace, species, sstart, send, step
 
 ; File Options
 directory = "/scratch/01707/mepa/Rad_1Mpc/RadCosmoLW_res128/"
@@ -11,10 +11,31 @@ plotgif = 1
 charsize = 1.4
 
 ; Constants
-amu = 1.66053892e-24
-m_H = 1.00794 * amu
+m_p = 1.67262178e-24
+m_e = 9.10938291e-28
+
+m_h = m_p + m_e
+m_hplu = m_p
+m_hmin = m_p + 2 * m_e
+
+m_hel = 4 * m_p + 2 * m_e
+m_hep = 4 * m_p + m_e
+m_hepp = 4 * m_p
+
+m_htwo = 2 * m_p + 2 * m_e
+m_htwp = 2 * m_p + m_e
+
+m_deut = 2 * m_p + m_e
+m_dplu = 2 * m_p
+m_hd = 3 * m_p + 2 * m_e
+
+m_total = m_h + m_hplu + m_hmin + m_hel + m_hep + m_hepp + m_htwo + m_htwp + m_deut + m_dplu + m_hd + m_e
+m_h_nuclei = 
+
 
 for number = sstart,send,step do begin
+
+   for
 
     if (number ge 1)   then prefix = '000'
     if (number ge 10)   then prefix = '00'
