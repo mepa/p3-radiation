@@ -1,0 +1,29 @@
+
+target_age = 100 Myr
+spectrum_age = 90.01 Myr
+
+sigma_Hminus = 8.70404e-18 1.68917e-18 2.72902e-18 7.55865e-19 1.9407e-19
+sigma_H = 0 0 3.4374e-18 6.93798e-19 1.02642e-19
+sigma_He = 0 0 0 5.12362e-18 1.47616e-18
+sigma_Heplus = 0 0 0 0 1.34572e-18
+
+sigmaE_H = 0 0 1.68026e-29 1.7483e-29 7.23879e-30
+sigmaE_He = 0 0 0 4.60298e-29 7.84651e-29
+sigmaE_Heplus = 0 0 0 0 7.01259e-30
+
+DeltaE_H = 0 0 3.05096 15.728 44.018
+DeltaE_He = 0 0 0 5.60728 33.1768
+DeltaE_Heplus = 0 0 0 0 3.25246
+
+N_dot_Hminus_total = 3.25954e+06
+N_dot_H_total = 107387
+N_dot_He_total = 25196.9
+N_dot_Heplus_total = 3.94772
+N_dot_H2 = 278482
+
+J21_LW = 0.758671
+
+Gamma_H_total = 3e-13
+Gamma_He_total = 1.29085e-13
+Gamma_Heplus_total = 5.31255e-18
+
